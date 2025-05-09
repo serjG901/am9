@@ -15,7 +15,8 @@ export interface UserActionStore {
   toggleFilterByCurrentActionType: () => void;
   toggleAction: () => void;
   getActions: () => UserAction[];
-  getActionsByType: () => Record<string, UserAction[]>;
+  getDoneActionsReverse: () => UserAction[];
+  getDoneActionsByType: () => Record<string, UserAction[]>;
   setCurrentActionType: (actionType: string) => void;
   startCurrentAction: () => void;
   getCurrentActionStartTime: () => Timestamp | undefined;

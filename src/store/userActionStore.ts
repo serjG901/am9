@@ -53,12 +53,27 @@ const useUserActionStore = create<UserActionStore>()(
           : actions;
       },
 
-      getActionsByType: () => {
+      getDoneActionsReverse: () => {
+        const { actions, isFiltredByCurrentActionType, currentActionType } =
+          get();
+        return isFiltredByCurrentActionType
+          ? actions
+              .filter(
+                (action) =>
+                  action.actionType === currentActionType && action.endTime
+              )
+              .toReversed()
+          : actions.filter((action) => action.endTime).toReversed();
+      },
+
+      getDoneActionsByType: () => {
         const { actions } = get();
-        return actions.reduce((acc, action) => {
-          (acc[action.actionType] ||= []).push(action);
-          return acc;
-        }, {} as Record<string, UserAction[]>);
+        return actions
+          .filter((action) => action.endTime)
+          .reduce((acc, action) => {
+            (acc[action.actionType] ||= []).push(action);
+            return acc;
+          }, {} as Record<string, UserAction[]>);
       },
 
       setCurrentActionType: (actionType) =>

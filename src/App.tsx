@@ -25,8 +25,8 @@ function App() {
     toggleFilterByCurrentActionType,
     toggleAction,
     getCurrentActionStartTime,
-    getActions,
-    getActionsByType,
+    getDoneActionsReverse,
+    getDoneActionsByType,
     deleteActions,
   ] = useDometerStore(
     useShallow((state) => [
@@ -38,20 +38,18 @@ function App() {
       state.toggleFilterByCurrentActionType,
       state.toggleAction,
       state.getCurrentActionStartTime,
-      state.getActions,
-      state.getActionsByType,
+      state.getDoneActionsReverse,
+      state.getDoneActionsByType,
       state.deleteActions,
     ])
   );
-
-  const reverseDoTimes = [...getActions()].reverse().filter((a) => a.endTime);
 
   useEffect(() => {
     updateTimestamp();
     return () => {
       removeTimer();
     };
-  }, [removeTimer, updateTimestamp]);
+  }, []);
 
   return (
     <>
@@ -109,19 +107,19 @@ function App() {
           : "..."}
       </div>
 
-      {Object.keys(getActionsByType()).length ? (
+      {Object.keys(getDoneActionsByType()).length ? (
         <div className='sum-times'>
           <div className='table'>
             <div className='row'>
               <div>action type</div>
               <div>current sum</div>
             </div>
-            {Object.keys(getActionsByType()).map((key) => {
+            {Object.keys(getDoneActionsByType()).map((key) => {
               const currentDay = new Date(Date.now())
                 .toISOString()
                 .slice(0, 10);
               const currentMounth = currentDay.slice(0, 7);
-              const sum = getActionsByType()[key]!.reduce(
+              const sum = getDoneActionsByType()[key]!.reduce(
                 (acc, a) => {
                   const aStartDay = new Date(a.startTime)
                     .toISOString()
@@ -171,7 +169,7 @@ function App() {
         </div>
       ) : null}
 
-      {reverseDoTimes.length ? (
+      {getDoneActionsReverse().length ? (
         <div className='do-times'>
           <div className='table'>
             <div className='row'>
@@ -180,7 +178,7 @@ function App() {
               <div>time</div>
               <div>stop</div>
             </div>
-            {reverseDoTimes.map((time, i) => {
+            {getDoneActionsReverse().map((time, i) => {
               const sec = Math.ceil((time.endTime! - time.startTime) / 1000);
               const dateTime1 = new Date(time.startTime)
                 .toLocaleString()
@@ -212,7 +210,7 @@ function App() {
         </div>
       ) : null}
 
-      {reverseDoTimes.length ? (
+      {getDoneActionsReverse.length ? (
         <div>
           <button
             className='delete-times'
