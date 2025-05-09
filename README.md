@@ -1,2 +1,2 @@
-# dometer
-fixing time that you spend to do
+# am9
+intuitive app for self manage your activity
