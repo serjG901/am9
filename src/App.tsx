@@ -1,76 +1,58 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
-import useDometerStore from "./store/store";
+import useDometerStore from "./store/userActionStore";
 import { useShallow } from "zustand/react/shallow";
 import Logo from "./assets/logo512.png";
 import PWABadge from "./PWABadge";
-import InputWithOptions from "./input-with-options/InputWithOptions";
-import Checked from "./checked/Checked";
+import InputWithOptions from "./ui/input-with-options/InputWithOptions";
+import Checked from "./ui/checked/Checked";
+import useTimerStore from "./store/timerStore";
 
 function App() {
-  const [isFiltred, setIsFiltred] = useState(false);
-
-  const [timer, setTimer] = useState(0);
-
-  const [
-    type,
-    startTime,
-    isDoing,
-    doTimes,
-    setType,
-    startDoing,
-    endDoing,
-    deleteDoTimes,
-  ] = useDometerStore(
+  const [currentTimestamp, updateTimestamp, removeTimer] = useTimerStore(
     useShallow((state) => [
-      state.type,
-      state.startTime,
-      state.isDoing,
-      state.doTimes,
-      state.setType,
-      state.startDoing,
-      state.endDoing,
-      state.deleteDoTimes,
+      state.currentTimestamp,
+      state.updateTimestamp,
+      state.removeTimer,
     ])
   );
 
-  const handleSwitchDoing = () => {
-    if (isDoing) {
-      window.navigator.vibrate([300, 100, 300]);
-      endDoing();
-    } else {
-      window.navigator.vibrate([300]);
-      startDoing();
-    }
-  };
+  const [
+    currentActionType,
+    setCurrentActionType,
+    isUserActive,
+    actionTypes,
+    isFiltredByCurrentActionType,
+    toggleFilterByCurrentActionType,
+    toggleAction,
+    getCurrentActionStartTime,
+    getActions,
+    getActionsByType,
+    deleteActions,
+  ] = useDometerStore(
+    useShallow((state) => [
+      state.currentActionType,
+      state.setCurrentActionType,
+      state.isUserActive,
+      state.actionTypes,
+      state.isFiltredByCurrentActionType,
+      state.toggleFilterByCurrentActionType,
+      state.toggleAction,
+      state.getCurrentActionStartTime,
+      state.getActions,
+      state.getActionsByType,
+      state.deleteActions,
+    ])
+  );
 
-  const handleDeleteDoTimes = () => {
-    if (confirm(`Delete ${type ? type : "ALL"} times?`)) {
-      window.navigator.vibrate([300, 100, 300, 100, 300]);
-      deleteDoTimes();
-    }
-  };
-
-  const reverseDoTimes = [...doTimes].reverse();
-
-  const displayingDoTimes = isFiltred
-    ? reverseDoTimes.filter((t) => t.type === type)
-    : reverseDoTimes;
-
-  const allDoByType = Object.groupBy(displayingDoTimes, ({ type }) => type);
+  const reverseDoTimes = [...getActions()].reverse().filter((a) => a.endTime);
 
   useEffect(() => {
-    let timer = 0;
-    if (isDoing) {
-      setTimer(Date.now());
-      timer = setInterval(() => setTimer(Date.now()), 30 * 1000);
-    } else {
-      clearInterval(timer);
-    }
+    updateTimestamp();
     return () => {
-      clearInterval(timer);
+      removeTimer();
     };
-  }, [isDoing]);
+  }, [removeTimer, updateTimestamp]);
 
   return (
     <>
@@ -81,81 +63,83 @@ function App() {
       <h1>dometer</h1>
 
       <InputWithOptions
-        id='type-to-do'
+        id='currentActionType-to-do'
         name='what to do'
-        valueFromParent={type}
-        disabled={isDoing}
-        hoistValue={setType}
-        options={Array.from(new Set(doTimes.map((t) => t.type)))}
+        valueFromParent={currentActionType}
+        disabled={isUserActive}
+        hoistValue={setCurrentActionType}
+        options={actionTypes}
       />
 
       <Checked
         id='is-filtred'
         name='apply filter'
-        valueFromParent={isFiltred}
-        hoistValue={setIsFiltred}
+        valueFromParent={isFiltredByCurrentActionType}
+        hoistValue={toggleFilterByCurrentActionType}
       />
 
       <div className='switch'>
         <button
           className='switch-doing'
-          data-is-doing={isDoing ? "is-doing" : ""}
-          onClick={handleSwitchDoing}
+          data-is-doing={isUserActive ? "is-doing" : ""}
+          onClick={toggleAction}
         >
-          {isDoing ? (
+          {isUserActive ? (
             "Stop"
           ) : (
             <>
-              Start <span>{type}</span>
+              Start <span>{currentActionType}</span>
             </>
           )}
         </button>
       </div>
 
-      {isDoing ? (
+      {isUserActive ? (
         <div className='doing-blinker'>
-          <span>{type ? type : "doing something"}</span>
+          <span>
+            {currentActionType ? currentActionType : "doing something"}
+          </span>
         </div>
       ) : (
         <div className='resting'>just resting</div>
       )}
 
       <div className='start-time'>
-        {startTime
-          ? `started at ${new Date(startTime)
+        {getCurrentActionStartTime()
+          ? `started at ${new Date(getCurrentActionStartTime()!)
               .toLocaleString()
               .split(",")
               .reverse()
               .join(" ")}, spend ~ ${Math.round(
-              (timer - startTime) / (1000 * 60)
-            )} min`
+              (currentTimestamp - getCurrentActionStartTime()!) / 1000
+            )}s`
           : "..."}
       </div>
 
-      {Object.keys(allDoByType).length ? (
+      {Object.keys(getActionsByType()).length ? (
         <div className='sum-times'>
           <div className='table'>
             <div className='row'>
-              <div>type</div>
+              <div>action type</div>
               <div>current sum</div>
             </div>
-            {Object.keys(allDoByType).map((key) => {
+            {Object.keys(getActionsByType()).map((key) => {
               const currentDay = new Date(Date.now())
                 .toISOString()
                 .slice(0, 10);
               const currentMounth = currentDay.slice(0, 7);
-              const sum = allDoByType[key]!.reduce(
+              const sum = getActionsByType()[key]!.reduce(
                 (acc, a) => {
-                  const aStartDay = new Date(a.start)
+                  const aStartDay = new Date(a.startTime)
                     .toISOString()
                     .slice(0, 10);
                   const aStartMounth = aStartDay.slice(0, 7);
 
                   if (aStartDay === currentDay) {
-                    acc[0] += Math.ceil((a.end - a.start) / 1000);
+                    acc[0] += Math.ceil((a.endTime! - a.startTime) / 1000);
                   }
                   if (aStartMounth === currentMounth) {
-                    acc[1] += Math.ceil((a.end - a.start) / 1000);
+                    acc[1] += Math.ceil((a.endTime! - a.startTime) / 1000);
                   }
                   return acc;
                 },
@@ -164,7 +148,10 @@ function App() {
               return (
                 <div className='row'>
                   <div>
-                    <button disabled={isDoing} onClick={() => setType(key)}>
+                    <button
+                      disabled={isUserActive}
+                      onClick={() => setCurrentActionType(key)}
+                    >
                       {key}
                     </button>
                   </div>
@@ -191,25 +178,27 @@ function App() {
         </div>
       ) : null}
 
-      {displayingDoTimes.length ? (
+      {reverseDoTimes.length ? (
         <div className='do-times'>
           <div className='table'>
             <div className='row'>
-              <div>type</div>
+              <div>action type</div>
               <div>start</div>
               <div>time</div>
               <div>stop</div>
             </div>
-            {displayingDoTimes.map((time, i) => {
-              const sec = Math.ceil((time.end - time.start) / 1000);
-              const dateTime1 = new Date(time.start)
+            {reverseDoTimes.map((time, i) => {
+              const sec = Math.ceil((time.endTime! - time.startTime) / 1000);
+              const dateTime1 = new Date(time.startTime)
                 .toLocaleString()
                 .split(",");
-              const dateTime2 = new Date(time.end).toLocaleString().split(",");
+              const dateTime2 = new Date(time.endTime!)
+                .toLocaleString()
+                .split(",");
               return (
                 <div className='row' key={i}>
                   <div>
-                    <div>{time.type}</div>
+                    <div>{time.actionType}</div>
                   </div>
                   <div>
                     <div>{dateTime1[0]}</div>
@@ -234,10 +223,11 @@ function App() {
         <div>
           <button
             className='delete-times'
-            disabled={isDoing}
-            onClick={handleDeleteDoTimes}
+            disabled={isUserActive}
+            onClick={deleteActions}
           >
-            DELETE {type ? <span>{type}</span> : "ALL"} TIMES
+            DELETE{" "}
+            {currentActionType ? <span>{currentActionType}</span> : "ALL"}
           </button>
         </div>
       ) : null}

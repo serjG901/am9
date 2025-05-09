@@ -11,12 +11,16 @@ export interface UserActionStore {
   isUserActive: boolean;
   actions: UserAction[];
   actionTypes: string[];
-
+  isFiltredByCurrentActionType: boolean;
+  toggleFilterByCurrentActionType: () => void;
+  toggleAction: () => void;
+  getActions: () => UserAction[];
+  getActionsByType: () => Record<string, UserAction[]>;
   setCurrentActionType: (actionType: string) => void;
   startCurrentAction: () => void;
+  getCurrentActionStartTime: () => Timestamp | undefined;
   stopCurrentAction: () => void;
-  clearAllActions: () => void;
-  clearActionsByType: (actionType: string) => void;
+  deleteActions: () => void;
 }
 
 export interface TimerStore {
