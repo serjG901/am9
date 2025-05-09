@@ -1,0 +1,23 @@
+.input-with-options {
+  position: relative;
+  label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+      color: gray;
+    }
+    input {
+      font-size: 1.2rem;
+      width: 100%;
+      max-width: 18ch;
+    }
+    .input-with-options-clear {
+      position: absolute;
+      bottom: 0.2rem;
+      right: 0.2rem;
+      scale: 0.8;
+      color: red;
+    }
+  }
+}
