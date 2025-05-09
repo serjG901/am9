@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import "./App.css";
 import useDometerStore from "./store/userActionStore";
 import { useShallow } from "zustand/react/shallow";
-import Logo from "./assets/logo512.png";
 import PWABadge from "./PWABadge";
 import InputWithOptions from "./ui/input-with-options/InputWithOptions";
 import Checked from "./ui/checked/Checked";
@@ -56,12 +55,6 @@ function App() {
 
   return (
     <>
-      <div>
-        <img src={Logo} width={64} height={64} />
-      </div>
-
-      <h1>dometer</h1>
-
       <InputWithOptions
         id='currentActionType-to-do'
         name='what to do'
