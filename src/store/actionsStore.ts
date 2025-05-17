@@ -114,7 +114,8 @@ const useActionsStore = create<ActionsStore>()(
       updateActivity: (oldActivity, newActivity) => {
         set((state) => ({
           actions: state.actions.map((action) =>
-            JSON.stringify(action.activity) === JSON.stringify(oldActivity)
+            action.activity.name === oldActivity.name &&
+            action.activity.color === oldActivity.color
               ? {
                   ...action,
                   activity: newActivity,
@@ -127,7 +128,8 @@ const useActionsStore = create<ActionsStore>()(
         set((state) => ({
           actions: state.actions.filter(
             (action) =>
-              JSON.stringify(action.activity) !== JSON.stringify(activityDelete)
+              action.activity.name !== activityDelete.name &&
+              action.activity.color !== activityDelete.color
           ),
         }));
       },

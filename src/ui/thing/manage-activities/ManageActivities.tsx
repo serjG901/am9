@@ -23,7 +23,7 @@ export default function ManageActivities() {
 
   return (
     <FlexColumnCenter>
-      <Collapse title='Activities' collapseLevel='settings'>
+      <Collapse title='activities' collapseLevel='settings'>
         <FlexWrap>
           {getActivities(actions).map((activity: Activity) => {
             const handleShowModal = () => {

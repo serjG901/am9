@@ -71,6 +71,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
         <h1>Action</h1>
         <hr />
         <FlexColumnCenter>
+          <h2>Activity</h2>
           <FocusActivity
             focusActivity={focusActivity}
             maybeActivities={getActivities(actions)}

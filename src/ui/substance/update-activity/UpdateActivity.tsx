@@ -57,8 +57,7 @@ export default function UpdateActivity({
     if (isActionStatus === 3) {
       const oldActivity = { name: activity.name, color: activity.color };
       const newActivity = { name, color };
-      updateActivity(newActivity, oldActivity);
-
+      updateActivity(oldActivity, newActivity);
       timer = setTimeout(() => setIsActionStatus(4), 300);
     }
     if (isActionStatus === 4) {

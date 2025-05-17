@@ -34,7 +34,6 @@ export default function FormActivity({
 
   return (
     <FlexColumnCenter>
-      <h2>Activity</h2>
       <div>
         <InputWithOptions
           id={`add-activity-name-${nameFromParent + colorFromParent}`}
