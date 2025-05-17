@@ -1,5 +1,5 @@
-import { ReactNode, useState } from "react";
 import "./style.css";
+import { ReactNode, useState } from "react";
 import correctionScrollPosition from "../../../helpers/correctionScrollPosition";
 
 interface CollapseComponent {

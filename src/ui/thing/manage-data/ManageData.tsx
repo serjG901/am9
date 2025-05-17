@@ -1,10 +1,10 @@
 import "./style.css";
+import { useShallow } from "zustand/shallow";
 import { ChangeEvent, useEffect, useState } from "react";
 import { name as appName } from "../../../../package.json";
 import ActionButton from "../../atom/action-button/ActionButton";
-import getDatetimeToString from "../../../helpers/getDatetimeToString";
 import useActionsStore from "../../../store/actionsStore";
-import { useShallow } from "zustand/shallow";
+import getDatetimeToString from "../../../helpers/getDatetimeToString";
 
 export default function ManageData() {
   const [getState, setState] = useActionsStore(

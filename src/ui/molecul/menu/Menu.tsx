@@ -1,12 +1,10 @@
 import "./style.css";
-
+import { ReactNode } from "react";
 import ActionButton from "../../atom/action-button/ActionButton";
 import Collapse from "../../atom/collapse/Collapse";
-import { TextesByLanguage } from "../../../interfaces";
 import FlexWrap from "../../atom/flex-wrap/FlexWrap";
-import { ReactNode } from "react";
 
-interface MenuComponent extends TextesByLanguage {
+interface MenuComponent {
   choisedOption?: string;
   collapseLevel?: string;
   title?: string | ReactNode;
@@ -20,7 +18,6 @@ export default function Menu({
   title = "menu",
   options = ["one", "two", "three"],
   actionWithPayload = () => {},
-  textes = {},
 }: MenuComponent) {
   return (
     <div className='menu'>
@@ -34,7 +31,7 @@ export default function Menu({
                 payload={opt}
                 showBorder={choisedOption === opt}
               >
-                {textes[opt] || opt}
+                {opt}
               </ActionButton>
             );
           })}

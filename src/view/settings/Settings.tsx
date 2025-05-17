@@ -1,13 +1,13 @@
 import "./style.css";
-import Page from "../../ui/atom/page/Page";
+import { useShallow } from "zustand/shallow";
 import { useSettingsStore } from "../../store/settingsStore";
+import Page from "../../ui/atom/page/Page";
 import InputRange from "../../ui/atom/input-range/InputRange";
 import ManageData from "../../ui/thing/manage-data/ManageData";
 import HighlightText from "../../ui/atom/highlight-text/HighlightText";
-import hslToRgb from "../../helpers/hslToRgb";
 import FlexColumnCenter from "../../ui/atom/flex-column-center/FlexColumnCenter";
 import ManageActivities from "../../ui/thing/manage-activities/ManageActivities";
-import { useShallow } from "zustand/shallow";
+import hslToRgb from "../../helpers/hslToRgb";
 
 export default function Settings() {
   const [hue, setHue] = useSettingsStore(

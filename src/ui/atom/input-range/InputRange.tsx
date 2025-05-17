@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import "./style.css";
+import { useEffect, useState } from "react";
 
 interface InputRangeComponent {
   id?: string;
@@ -34,9 +34,7 @@ export default function InputRange({
   }, [valueFromParent]);
 
   return (
-    <div
-      className='input-range'
-    >
+    <div className='input-range'>
       <label htmlFor={id}>
         <span>{name}</span>
         <input

@@ -1,4 +1,5 @@
 import "./style.css";
+import { useShallow } from "zustand/shallow";
 import { Activity } from "../../../interfaces";
 import useActionsStore from "../../../store/actionsStore";
 import ActionButton from "../../atom/action-button/ActionButton";
@@ -8,7 +9,6 @@ import FlexColumnCenter from "../../atom/flex-column-center/FlexColumnCenter";
 import FlexWrap from "../../atom/flex-wrap/FlexWrap";
 import Modal from "../../molecul/modal/Modal";
 import UpdateActivity from "../../substance/update-activity/UpdateActivity";
-import { useShallow } from "zustand/shallow";
 
 export default function ManageActivities() {
   const [actions, getActivities, updateActivity, deleteActivity] =

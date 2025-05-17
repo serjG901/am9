@@ -1,18 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
-import { ReactNode } from "react";
 import "./style.css";
+import { ReactNode } from "react";
 import ActionButton from "../../atom/action-button/ActionButton";
-import { TextesByLanguage } from "../../../interfaces";
 
-interface ModalComponent extends TextesByLanguage {
+interface ModalComponent {
   id?: string;
   children?: ReactNode;
   hideModal?: (isShow: boolean) => void;
 }
 
 export default function Modal({
-  textes = {},
   id = "modal",
   children = "children",
   hideModal = () => {},
@@ -28,7 +24,7 @@ export default function Modal({
         <div className='modal-content'>{children}</div>
         <div className='hide-modal'>
           <ActionButton actionWithPayload={hideModal} attention>
-            {textes["close"] || "close"}
+            close
           </ActionButton>
         </div>
       </div>

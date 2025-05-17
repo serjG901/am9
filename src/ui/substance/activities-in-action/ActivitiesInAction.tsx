@@ -1,7 +1,7 @@
 import "./style.css";
+import { Activity } from "../../../interfaces";
 import ActionButton from "../../atom/action-button/ActionButton";
 import Collapse from "../../atom/collapse/Collapse";
-import { Activity } from "../../../interfaces";
 import FlexWrap from "../../atom/flex-wrap/FlexWrap";
 
 interface ActivitiesInActionComponent {

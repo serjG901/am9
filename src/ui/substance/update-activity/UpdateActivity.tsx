@@ -1,8 +1,8 @@
 import "./style.css";
 import { useEffect, useState } from "react";
+import { Activity } from "../../../interfaces";
 import ActionButton from "../../atom/action-button/ActionButton";
 import FlexColumnCenter from "../../atom/flex-column-center/FlexColumnCenter";
-import { Activity } from "../../../interfaces";
 import LoadingDots from "../../atom/loading-dots/LoadingDots";
 import FormActivity from "../../molecul/form-activity/FormActivity";
 

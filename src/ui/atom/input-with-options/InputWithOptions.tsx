@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import "./style.css";
+import { useEffect, useState } from "react";
 import Cross from "../cross/Cross";
 import ActionButton from "../action-button/ActionButton";
 
@@ -67,7 +67,11 @@ export default function InputWithOptions({
         ) : null}
         {state && (
           <div className='input-with-options-clear'>
-            <ActionButton disabled={disabled} actionWithPayload={handleClearInput} alert>
+            <ActionButton
+              disabled={disabled}
+              actionWithPayload={handleClearInput}
+              alert
+            >
               <Cross />
             </ActionButton>
           </div>

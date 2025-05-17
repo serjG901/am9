@@ -1,19 +1,19 @@
 import "./style.css";
-import Page from "../../ui/atom/page/Page";
-import FormDataRange from "../../ui/molecul/form-date-range/FormDateRange";
+import { useShallow } from "zustand/shallow";
+import { StoreApi, UseBoundStore } from "zustand";
 import { usePeriodStore } from "../../store/periodStore";
 import { ActionsStore, StorePersist, Write } from "../../interfaces";
-import { StoreApi, UseBoundStore } from "zustand";
 //import Paginate from "../../ui/substance/paginate/Paginate";
 //import ToTop from "../../ui/molecul/to-top/ToTop";
 import FlexColumnCenter from "../../ui/atom/flex-column-center/FlexColumnCenter";
 //import StatisticByPeriod from "../../ui/substance/statistic-by-period/StatisticByPeriod";
 import Collapse from "../../ui/atom/collapse/Collapse";
 import FocusActivity from "../../ui/substance/focus-activity/FocusActivity";
-import { useShallow } from "zustand/shallow";
 import Checked from "../../ui/atom/checked/Checked";
 import StartStopAction from "../../ui/substance/start-stop-action/StartStopAction";
 import ActivitiesInAction from "../../ui/substance/activities-in-action/ActivitiesInAction";
+import Page from "../../ui/atom/page/Page";
+import FormDataRange from "../../ui/molecul/form-date-range/FormDateRange";
 
 interface ActionsComponent {
   useActionsStore: UseBoundStore<

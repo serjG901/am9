@@ -1,5 +1,5 @@
-import ActionButton from "../../atom/action-button/ActionButton";
 import "./style.css";
+import ActionButton from "../../atom/action-button/ActionButton";
 
 export default function ToTop() {
   const toTop = () => {

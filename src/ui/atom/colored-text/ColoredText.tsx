@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
 import "./style.css";
+import React, { ReactNode } from "react";
 
 interface ColoredTextComponent {
   color?: string;

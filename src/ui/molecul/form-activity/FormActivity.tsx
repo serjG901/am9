@@ -1,8 +1,8 @@
+import "./style.css";
 import { useEffect, useState } from "react";
+import { Activity } from "../../../interfaces";
 import Colorpicker from "../../atom/colorpicker/Colorpicker";
 import FlexColumnCenter from "../../atom/flex-column-center/FlexColumnCenter";
-import "./style.css";
-import { Activity } from "../../../interfaces";
 import InputWithOptions from "../../atom/input-with-options/InputWithOptions";
 
 interface FormActivityComponent {

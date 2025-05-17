@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import "./style.css";
+import { useEffect, useState } from "react";
 
 interface CheckedComponent {
   id?: string;

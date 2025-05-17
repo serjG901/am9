@@ -1,11 +1,11 @@
-import React, { ReactNode } from "react";
 import "./style.css";
+import React, { ReactNode } from "react";
 
 interface HighlightTextComponent {
   bgColor?: string;
   children?: ReactNode;
   padding?: boolean;
-  simple?:boolean;
+  simple?: boolean;
 }
 
 export default function HighlightText({

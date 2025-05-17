@@ -1,6 +1,6 @@
 import "./style.css";
-import calculatePaginationRenderPage from "../../../helpers/calculatePaginationRenderPage";
 import PaginatePageButton from "../../molecul/paginate-page-button/PaginatePageButton";
+import calculatePaginationRenderPage from "../../../helpers/calculatePaginationRenderPage";
 
 interface PaginateComponent {
   dublicate?: boolean;
