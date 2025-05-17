@@ -1,0 +1,28 @@
+.to-top {
+  position: sticky;
+  bottom: 1rem;
+  left: 1rem;
+  width: min-content;
+  place-items: center;
+  animation-name: show-to-top;
+  animation-timeline: scroll(nearest);
+}
+
+@keyframes show-to-top {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  40% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  60% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}

@@ -1,16 +1,91 @@
 :root {
+  /*colors*/
+
+  --color-white: hsl(0, 0%, 100%);
+  --color-black: hsl(0, 0%, 0%);
+  --color-gray: hsl(0, 0%, 50%);
+  --color-transporent: hsla(0, 0%, 100%, 0);
+  --color-alert: hsl(0, 100%, 50%);
+  --color-attention: hsl(60, 100%, 50%);
+  --color-confirm: hsl(120, 100%, 50%);
+
+  --color-text-main: hsl(0, 0%, 90%);
+  --color-bg-main: hsl(0, 0%, 20%);
+  --light: 20%;
+
+  --border-radius-action-element: 8px;
+  --border-radius-card: 24px;
+
+  --font-weight-action-element: 500;
+  --font-size-action-element: 1rem;
+  --padding-action-element: 0.6rem 1.2rem;
+  --border-action-element: 1px solid var(--color-transporent);
+  
+  --gap-xxs: 0.125rem;
+  --gap-xs: 0.25rem;
+  --gap-s: 0.5rem;
+  --gap-m: 1rem;
+  --gap-l: 1.5rem;
+
+  --padding-xs: 0.25rem;
+  --padding-s: 0.5rem;
+  --padding-m: 1rem;
+  --padding-l: 1.5rem;
+
+  --gap-page: var(--gap-m);
+
+  --padding-menu: var(--padding-s);
+  --gap-menu: var(--gap-s);
+
+  --gap-card: var(--gap-m);
+  --padding-card: var(--padding-m);
+
+  --loading-gradient: linear-gradient(
+    0deg,
+    var(--color-white) 0%,
+    var(--color-neutral) 50%,
+    var(--color-white) 100%
+  );
+  --loading-time: 3s;
+  --loading-behavior: var(--loading-time) linear infinite;
+}
+
+:root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light dark;
+  color: var(--color-text-main);
+  background-color: var(--color-bg-main);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+
+  interpolate-size: allow-keywords;
+  transition-behavior: allow-discrete;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-text-main: hsl(0, 0%, 0%);
+    --color-bg-main: hsl(0, 0%, 90%);
+    --light: 80%;
+    --color-attention: hsl(0, 100%, 20%);
+    --color-confirm: hsl(120, 100%, 50%);
+  }
+}
+
+@media (prefers-reduced-motion) {
+  * {
+    transition: none !important;
+  }
 }
 
 body {
@@ -20,53 +95,7 @@ body {
   min-height: 100vh;
 }
 
-
-button {
-  min-height: 2rem;
-  border-radius: 16px;
-  border: 2px solid transparent;
-  padding: 0.6rem 1.2rem;
-  font-weight: bold;
-  font-family: inherit;
-  background-color: black;
-  cursor: pointer;
-  opacity: 1;
-  transition: border-color 0.25s, opacity 1s linear;
-}
-button:not(:disabled):hover {
-  border-color: #007bff;
-}
-button:not(:disabled):focus,
-button:not(:disabled):focus-visible {
-  outline: 2px solid #007bff;
-}
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-label {
-  cursor: pointer;
-}
-
-input {
-  border-radius: 8px;
-  border: 2px solid transparent;
-  padding: 0.5rem;
-  font-family: inherit;
-  cursor: pointer;
-  opacity: 1;
-  transition: border-color 0.25s, opacity 1s linear;
-}
-input:not(:disabled):hover {
-  border-color: #007bff;
-}
-input:not(:disabled):focus,
-input:not(:disabled):focus-visible {
-  outline: 2px solid #007bff;
-}
-
-input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.error {
+  align-content: center;
+  height: 90dvh;
 }

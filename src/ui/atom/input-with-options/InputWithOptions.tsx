@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./style.css";
 import Cross from "../cross/Cross";
+import ActionButton from "../action-button/ActionButton";
 
 interface InputWithOptionsComponent {
   options?: string[];
@@ -65,13 +66,11 @@ export default function InputWithOptions({
           </datalist>
         ) : null}
         {state && (
-          <button
-            disabled={disabled}
-            className='input-with-options-clear'
-            onClick={handleClearInput}
-          >
-            <Cross />
-          </button>
+          <div className='input-with-options-clear'>
+            <ActionButton disabled={disabled} actionWithPayload={handleClearInput} alert>
+              <Cross />
+            </ActionButton>
+          </div>
         )}
       </label>
     </div>

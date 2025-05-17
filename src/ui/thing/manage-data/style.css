@@ -1,0 +1,48 @@
+.load-db {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-m);
+  .load-db-base-name {
+    color: var(--color-text-main);
+  }
+}
+
+.load-db-upload-status {
+  width: 100%;
+  color: lime;
+  height: calc(4.2rem + 2px);
+  hr {
+    width: 100%;
+    transition: width 1s ease-in-out;
+    @starting-style {
+      width: 0%;
+    }
+  }
+
+  div {
+    opacity: 1;
+    transition: opacity 1s ease-in-out 1s;
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
+.input-file {
+  max-width: 80%;
+  label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+      color: var(--color-text-label);
+      .input-file-base-name {
+        color: var(--color-main-light-accent);
+      }
+    }
+    input {
+      width: -webkit-fill-available;
+    }
+  }
+}

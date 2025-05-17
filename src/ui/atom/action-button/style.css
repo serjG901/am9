@@ -1,0 +1,50 @@
+.action-button {
+  -webkit-tap-highlight-color: initial;
+  height: min-content;
+  border-radius: var(--border-radius-action-element);
+  border: var(--border-action-element);
+  padding: var(--padding-action-element);
+  font-size: var(--font-size-action-element);
+  font-weight: var(--font-weight-action-element);
+  font-family: inherit;
+  background-color: var(--self-color-bg, var(--color-bg-button));
+  cursor: pointer;
+  transition: border-color 0.25s;
+  --self-color: color(
+    from var(--self-color-bg) srgb
+      calc(1 - round(calc(r + calc(g * 1.6) + calc(b * 0.4)) / 3, 1))
+      calc(1 - round(calc(r + calc(g * 1.6) + calc(b * 0.4)) / 3, 1))
+      calc(1 - round(calc(r + calc(g * 1.6) + calc(b * 0.4)) / 3, 1))
+  );
+  color: var(--self-color, var(--color-main-light-accent));
+  box-shadow: 1px 1px 8px rgb(0 0 0 /0.2), -1px 1px 8px rgb(0 0 0 /0.2);
+}
+
+.action-button:hover {
+  border-color: var(--color-border-action-element-accent);
+}
+.action-button:focus,
+.action-button:focus-visible {
+  outline: 2px solid var(--color-border-action-element-accent);
+}
+
+.action-button[data-attention="attention"] {
+  color: var(--color-attention);
+}
+
+.action-button[data-alert="alert"] {
+  color: var(--color-alert);
+}
+
+.action-button:disabled {
+  cursor: not-allowed;
+  filter: grayscale();
+}
+
+.action-button:disabled:hover {
+  border-color: var(--color-transporent);
+}
+
+.action-button[data-show-border="show"] {
+  border-color: var(--color-border-action-element-accent);
+}

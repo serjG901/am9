@@ -1,0 +1,16 @@
+.input-range {
+  label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+      color: var(--color-text-label);
+    }
+    input {
+      padding: 0;
+      width: 100%;
+      min-width: 250px;
+      accent-color: var(--color-main-light-accent);
+    }
+  }
+}

@@ -1,0 +1,33 @@
+.payments-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-page);
+  opacity: 1;
+  transform: translate(0px, 0px);
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  @starting-style {
+    opacity: 0;
+    transform: translate(0px, 1.5rem);
+  }
+  hr {
+    width: 100%;
+    opacity: 1;
+    transition: opacity 1s ease-in-out, width 1s ease-in-out;
+    transition-delay: 1s;
+    border: 2px solid var(--color-hr);
+    @starting-style {
+      width: 0%;
+      opacity: 0;
+    }
+  }
+  .sum {
+    font-weight: bold;
+    color: var(--color-card-amount);
+  }
+  .switch-card-simple {
+    align-self: end;
+    display: flex;
+    gap: var(--gap-m);
+  }
+}

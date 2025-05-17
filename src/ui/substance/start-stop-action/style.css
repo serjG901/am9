@@ -1,0 +1,11 @@
+.start-stop-action {
+  --font-size-action-element: 4rem;
+  --border-radius-action-element: 24px;
+  --padding-action-element: 2rem;
+  .start {
+    color: green;
+  }
+  .stop {
+    color: orange;
+  }
+}

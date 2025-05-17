@@ -1,231 +1,62 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import "./App.css";
-import useDometerStore from "./store/userActionStore";
-import { useShallow } from "zustand/react/shallow";
+import Menu from "./ui/molecul/menu/Menu";
+import React from "react";
+import SettingsApp from "./pages/settings-app/SettingsApp";
+import { useSettingsStore } from "./store/settingsStore";
+import { name as appName } from "../package.json";
 import PWABadge from "./PWABadge";
-import InputWithOptions from "./ui/input-with-options/InputWithOptions";
-import Checked from "./ui/checked/Checked";
-import useTimerStore from "./store/timerStore";
+import ActionsPage from "./pages/actions-page/ActionsPage";
+import { useShallow } from "zustand/shallow";
+
+const lastHref = window.location.href.split("/").at(-1);
+if (lastHref !== "" && lastHref !== "assetlinks.json")
+  window.location.replace(`/${appName}/`);
 
 function App() {
-  const [currentTimestamp, updateTimestamp, removeTimer] = useTimerStore(
-    useShallow((state) => [
-      state.currentTimestamp,
-      state.updateTimestamp,
-      state.removeTimer,
-    ])
-  );
+  const pageHref = (window.location.href.split("/").at(-1) as string) || "actions";
 
-  const [
-    currentActionType,
-    setCurrentActionType,
-    isUserActive,
-    actionTypes,
-    isFiltredByCurrentActionType,
-    toggleFilterByCurrentActionType,
-    toggleAction,
-    getCurrentActionStartTime,
-    getDoneActionsReverse,
-    getDoneActionsByType,
-    deleteActions,
-  ] = useDometerStore(
-    useShallow((state) => [
-      state.currentActionType,
-      state.setCurrentActionType,
-      state.isUserActive,
-      state.actionTypes,
-      state.isFiltredByCurrentActionType,
-      state.toggleFilterByCurrentActionType,
-      state.toggleAction,
-      state.getCurrentActionStartTime,
-      state.getDoneActionsReverse,
-      state.getDoneActionsByType,
-      state.deleteActions,
-    ])
-  );
+  const [page, setPage] = useState<string>(pageHref);
+  const [hue] = useSettingsStore(useShallow((state) => [state.hue]));
+
+  const pages: { [key: string]: ReactNode } = {
+    actions: <ActionsPage />,
+    settings: <SettingsApp />,
+  };
+
+  const handleActionMenu = (payload: string) => {
+    setPage(payload);
+    window.history.pushState({ page: payload }, "", `/${appName}/${payload}`);
+  };
 
   useEffect(() => {
-    updateTimestamp();
+    const controller = new AbortController();
+    window.addEventListener(
+      "popstate",
+      (event) => {
+        setPage(event.state && event.state.page ? event.state?.page : "actions");
+      },
+      {
+        signal: controller.signal,
+      }
+    );
     return () => {
-      removeTimer();
+      controller.abort();
     };
   }, []);
 
   return (
-    <>
-      <InputWithOptions
-        id='currentActionType-to-do'
-        name='what to do'
-        valueFromParent={currentActionType}
-        disabled={isUserActive}
-        hoistValue={setCurrentActionType}
-        options={actionTypes}
+    <div className='app' style={{ "--hue": hue } as React.CSSProperties}>
+      <Menu
+        choisedOption={page}
+        collapseLevel='menu'
+        title={<span>&#9776;</span>}
+        options={Object.keys(pages)}
+        actionWithPayload={handleActionMenu}
       />
-
-      <Checked
-        id='is-filtred'
-        name='apply filter'
-        valueFromParent={isFiltredByCurrentActionType}
-        hoistValue={toggleFilterByCurrentActionType}
-      />
-
-      <div className='switch'>
-        <button
-          className='switch-doing'
-          data-is-doing={isUserActive ? "is-doing" : ""}
-          onClick={toggleAction}
-        >
-          {isUserActive ? (
-            "Stop"
-          ) : (
-            <>
-              Start <span>{currentActionType}</span>
-            </>
-          )}
-        </button>
-      </div>
-
-      {isUserActive ? (
-        <div className='doing-blinker'>
-          <span>
-            {currentActionType ? currentActionType : "doing something"}
-          </span>
-        </div>
-      ) : (
-        <div className='resting'>just resting</div>
-      )}
-
-      <div className='start-time'>
-        {getCurrentActionStartTime()
-          ? `started at ${new Date(getCurrentActionStartTime()!)
-              .toLocaleString()
-              .split(",")
-              .reverse()
-              .join(" ")}, spend ~ ${Math.round(
-              (currentTimestamp - getCurrentActionStartTime()!) / 1000
-            )}s`
-          : "..."}
-      </div>
-
-      {Object.keys(getDoneActionsByType()).length ? (
-        <div className='sum-times'>
-          <div className='table'>
-            <div className='row'>
-              <div>action type</div>
-              <div>current sum</div>
-            </div>
-            {Object.keys(getDoneActionsByType()).map((key) => {
-              const currentDay = new Date(Date.now())
-                .toISOString()
-                .slice(0, 10);
-              const currentMounth = currentDay.slice(0, 7);
-              const sum = getDoneActionsByType()[key]!.reduce(
-                (acc, a) => {
-                  const aStartDay = new Date(a.startTime)
-                    .toISOString()
-                    .slice(0, 10);
-                  const aStartMounth = aStartDay.slice(0, 7);
-
-                  if (aStartDay === currentDay) {
-                    acc[0] += Math.ceil((a.endTime! - a.startTime) / 1000);
-                  }
-                  if (aStartMounth === currentMounth) {
-                    acc[1] += Math.ceil((a.endTime! - a.startTime) / 1000);
-                  }
-                  return acc;
-                },
-                [0, 0]
-              );
-              return (
-                <div className='row'>
-                  <div>
-                    <button
-                      disabled={isUserActive}
-                      onClick={() => setCurrentActionType(key)}
-                    >
-                      {key}
-                    </button>
-                  </div>
-                  <div className='text-left'>
-                    <div>
-                      <div className='gray'>{currentDay}:</div>
-                      <div>
-                        {sum[0]}s ~{Math.round(sum[0] / 60)}m ~
-                        {Math.round(sum[0] / (60 * 60))}h
-                      </div>
-                    </div>
-                    <div>
-                      <div className='gray'>{currentMounth}:</div>
-                      <div>
-                        {sum[1]}s ~{Math.round(sum[1] / 60)}m ~
-                        {Math.round(sum[1] / (60 * 60))}h
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : null}
-
-      {getDoneActionsReverse().length ? (
-        <div className='do-times'>
-          <div className='table'>
-            <div className='row'>
-              <div>action type</div>
-              <div>start</div>
-              <div>time</div>
-              <div>stop</div>
-            </div>
-            {getDoneActionsReverse().map((time, i) => {
-              const sec = Math.ceil((time.endTime! - time.startTime) / 1000);
-              const dateTime1 = new Date(time.startTime)
-                .toLocaleString()
-                .split(",");
-              const dateTime2 = new Date(time.endTime!)
-                .toLocaleString()
-                .split(",");
-              return (
-                <div className='row' key={i}>
-                  <div>
-                    <div>{time.actionType}</div>
-                  </div>
-                  <div>
-                    <div>{dateTime1[0]}</div>
-                    <div>{dateTime1[1]}</div>
-                  </div>
-                  <div>
-                    <div>{sec} sec</div>
-                    <div>~{Math.round(sec / 60)} min</div>
-                  </div>
-                  <div>
-                    <div>{dateTime2[0]}</div>
-                    <div>{dateTime2[1]}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : null}
-
-      {getDoneActionsReverse.length ? (
-        <div>
-          <button
-            className='delete-times'
-            disabled={isUserActive}
-            onClick={deleteActions}
-          >
-            DELETE{" "}
-            {currentActionType ? <span>{currentActionType}</span> : "ALL"}
-          </button>
-        </div>
-      ) : null}
-
+      {pages[page] || null}
       <PWABadge />
-    </>
+    </div>
   );
 }
-
 export default App;

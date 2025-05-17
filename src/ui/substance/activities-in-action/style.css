@@ -1,0 +1,10 @@
+.activity-in-action {
+  width: 100%;
+  .focus-activity-input {
+    margin: auto;
+    padding-bottom: 1rem;
+    > div {
+      gap: 1rem;
+    }
+  }
+}
