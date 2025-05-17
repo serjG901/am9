@@ -6,10 +6,10 @@ import { name as appName } from "../../package.json";
 export const usePeriodStore = create<PeriodStore>()(
   persist(
     (set) => ({
-      start: 0,
-      end: 0,
+      start: null,
+      end: null,
       setPeriod: (start, end) => {
-        if (start <= end) set({ start, end });
+        set({ start, end });
       },
     }),
     {

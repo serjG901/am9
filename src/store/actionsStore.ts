@@ -23,7 +23,7 @@ const useActionsStore = create<ActionsStore>()(
         ].map((a) => a[1]),
 
       getActivitiesInAction: (actions: Action[]) =>
-        actions.filter((action) => !action.endTime).map((a) => a.activity),
+        actions.filter((action) => !action.endTime),
 
       focusActivity: { name: "", color: "" },
       setFocusActivity: (activity: Activity) =>
@@ -111,7 +111,7 @@ const useActionsStore = create<ActionsStore>()(
         }));
       },
 
-      updateActivity: (oldActivity, newActivity) => {
+      updateActivity: ({ oldActivity, newActivity }) => {
         set((state) => ({
           actions: state.actions.map((action) =>
             action.activity.name === oldActivity.name &&

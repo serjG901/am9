@@ -6,8 +6,8 @@ import Datepicker from "../../atom/datepicker/Datepicker";
 import FlexColumnCenter from "../../atom/flex-column-center/FlexColumnCenter";
 
 interface FormDateRangeComponent {
-  period?: { start: number; end: number };
-  setPeriod?: (start: number, end: number) => void;
+  period?: { start: number | null; end: number | null };
+  setPeriod?: (start: number | null, end: number | null) => void;
 }
 
 export default function FormDateRange({
@@ -18,13 +18,13 @@ export default function FormDateRange({
   const [end, setEnd] = useState(period.end);
 
   const handleResetPeriod = () => {
-    setStart(0);
-    setEnd(0);
-    setPeriod(0, 0);
+    setStart(null);
+    setEnd(null);
+    setPeriod(null, null);
   };
 
   useEffect(() => {
-    if (start && end) setPeriod(start, end);
+    if (start !== null && end !== null) setPeriod(start, end);
   }, [start, end]);
 
   useEffect(() => {
@@ -54,13 +54,14 @@ export default function FormDateRange({
             />
           </FlexColumnCenter>
         </Collapse>
-        {start && end && (
+        {start !== null && end !== null ? (
           <div className='reset'>
             <ActionButton actionWithPayload={handleResetPeriod} alert>
               {"reset period"}
             </ActionButton>
+            {start > end ? <div>incorrect period</div> : null}
           </div>
-        )}
+        ) : null}
       </FlexColumnCenter>
     </div>
   );

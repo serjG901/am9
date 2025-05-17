@@ -2,7 +2,12 @@ import "./style.css";
 import { useShallow } from "zustand/shallow";
 import { StoreApi, UseBoundStore } from "zustand";
 import { usePeriodStore } from "../../store/periodStore";
-import { ActionsStore, StorePersist, Write } from "../../interfaces";
+import {
+  ActionsStore,
+  StorePersist,
+  TimerStore,
+  Write,
+} from "../../interfaces";
 //import Paginate from "../../ui/substance/paginate/Paginate";
 //import ToTop from "../../ui/molecul/to-top/ToTop";
 import FlexColumnCenter from "../../ui/atom/flex-column-center/FlexColumnCenter";
@@ -14,6 +19,8 @@ import StartStopAction from "../../ui/substance/start-stop-action/StartStopActio
 import ActivitiesInAction from "../../ui/substance/activities-in-action/ActivitiesInAction";
 import Page from "../../ui/atom/page/Page";
 import FormDataRange from "../../ui/molecul/form-date-range/FormDateRange";
+import useTimerStore from "../../store/timerStore";
+import { useEffect } from "react";
 
 interface ActionsComponent {
   useActionsStore: UseBoundStore<
@@ -61,24 +68,27 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
       //state.getActionsByActivity,
     ])
   );
+  const [currentTimestamp, updateTimestamp] = useTimerStore(
+    useShallow((state: TimerStore) => [
+      state.currentTimestamp,
+      state.updateTimestamp,
+    ])
+  );
 
   const [startPeriod, endPeriod, setPeriod] = usePeriodStore(
     useShallow((state) => [state.start, state.end, state.setPeriod])
   );
+
+  useEffect(() => {
+    updateTimestamp();
+  }, []);
+
   return (
     <Page>
       <div className='payments-view'>
         <h1>Action</h1>
         <hr />
         <FlexColumnCenter>
-          <h2>Activity</h2>
-          <FocusActivity
-            focusActivity={focusActivity}
-            maybeActivities={getActivities(actions)}
-            hoistActivity={setFocusActivity}
-          />
-
-          <hr />
           <StartStopAction
             activity={focusActivity}
             startAction={startAction}
@@ -87,6 +97,13 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
           />
           <ActivitiesInAction
             activitiesInAction={getActivitiesInAction(actions)}
+            hoistActivity={setFocusActivity}
+            timestamp={currentTimestamp}
+          />
+          <hr />
+          <FocusActivity
+            focusActivity={focusActivity}
+            maybeActivities={getActivities(actions)}
             hoistActivity={setFocusActivity}
           />
           <hr />

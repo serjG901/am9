@@ -41,7 +41,7 @@
   --color-border-action-element-accent: var(--color-main-light-accent);
   --color-border-card: var(--color-main-dark-accent);
 
-  --color-hr: var(--color-main-dark-accent);
+  --color-hr: var(--color-neutral);
 }
 
 @media (prefers-color-scheme: light) {

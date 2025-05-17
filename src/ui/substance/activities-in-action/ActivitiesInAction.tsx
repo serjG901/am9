@@ -1,38 +1,50 @@
 import "./style.css";
-import { Activity } from "../../../interfaces";
+import { Action, Activity } from "../../../interfaces";
 import ActionButton from "../../atom/action-button/ActionButton";
 import Collapse from "../../atom/collapse/Collapse";
 import FlexWrap from "../../atom/flex-wrap/FlexWrap";
+import FlexColumnCenter from "../../atom/flex-column-center/FlexColumnCenter";
+import getHMS from "../../../helpers/getHMS";
+import toNormalDateTime from "../../../helpers/toLocalDateTime";
 
 interface ActivitiesInActionComponent {
-  activitiesInAction?: Activity[];
+  activitiesInAction?: Action[];
   hoistActivity?: (activity: Activity) => void;
+  timestamp?: number;
 }
 
 export default function ActivitiesInAction({
   activitiesInAction = [],
   hoistActivity = () => {},
+  timestamp = Date.now(),
 }: ActivitiesInActionComponent) {
   return (
-    <Collapse
-      collapseLevel='menu'
-      title={`in action (${activitiesInAction.length})`}
-    >
-      <FlexWrap>
-        {activitiesInAction.map((activity) => (
-          <ActionButton
-            key={activity.name + activity.color}
-            actionWithPayload={hoistActivity}
-            payload={{
-              name: activity.name,
-              color: activity.color,
-            }}
-            bgColor={activity.color}
-          >
-            {activity.name}
-          </ActionButton>
-        ))}
-      </FlexWrap>
-    </Collapse>
+    <div className='activity-in-action'>
+      <FlexColumnCenter>
+        <Collapse
+          collapseLevel='actions'
+          title={`in action (${activitiesInAction.length})`}
+          openFromParrent={!!activitiesInAction.length}
+        >
+          <FlexWrap>
+            {activitiesInAction.map(({ activity, startTime }) => (
+              <ActionButton
+                key={activity.name + activity.color}
+                actionWithPayload={hoistActivity}
+                payload={{
+                  name: activity.name,
+                  color: activity.color,
+                }}
+                bgColor={activity.color}
+              >
+                <div>{activity.name}</div>
+                <div className='time'>{toNormalDateTime(startTime)}</div>
+                <div className='time'>{getHMS(timestamp - startTime)}</div>
+              </ActionButton>
+            ))}
+          </FlexWrap>
+        </Collapse>
+      </FlexColumnCenter>
+    </div>
   );
 }

@@ -7,8 +7,8 @@ import Collapse from "../../atom/collapse/Collapse";
 import Contents from "../../atom/contents/Contents";
 import FlexColumnCenter from "../../atom/flex-column-center/FlexColumnCenter";
 import FlexWrap from "../../atom/flex-wrap/FlexWrap";
-import Modal from "../../molecul/modal/Modal";
 import UpdateActivity from "../../substance/update-activity/UpdateActivity";
+import { useState } from "react";
 
 export default function ManageActivities() {
   const [actions, getActivities, updateActivity, deleteActivity] =
@@ -20,48 +20,42 @@ export default function ManageActivities() {
         state.deleteActivity,
       ])
     );
+  const [activityToUpdate, setActivityToUpdate] = useState({
+    name: "",
+    color: "",
+  });
+
+  const handleShowModal = (activity: Activity) => {
+    setActivityToUpdate(activity);
+    const modalId = document.getElementById("update-modal");
+    modalId?.showPopover();
+  };
 
   return (
     <FlexColumnCenter>
       <Collapse title='activities' collapseLevel='settings'>
         <FlexWrap>
           {getActivities(actions).map((activity: Activity) => {
-            const handleShowModal = () => {
-              const modalId = document.getElementById(
-                `update-activity-${activity.name + activity.color}`
-              );
-              modalId?.showPopover();
-            };
-            const handleHideModal = () => {
-              const modalId = document.getElementById(
-                `update-activity-${activity.name + activity.color}`
-              );
-              modalId?.hidePopover();
-            };
-
             return (
               <Contents key={activity.name + activity.color}>
                 <ActionButton
                   actionWithPayload={handleShowModal}
+                  payload={activity}
                   bgColor={activity.color}
                 >
                   {activity.name}
                 </ActionButton>
-                <Modal
-                  id={`update-activity-${activity.name + activity.color}`}
-                  hideModal={handleHideModal}
-                >
-                  <UpdateActivity
-                    activity={activity}
-                    updateActivity={updateActivity}
-                    deleteActivity={deleteActivity}
-                  />
-                </Modal>
               </Contents>
             );
           })}
         </FlexWrap>
       </Collapse>
+
+      <UpdateActivity
+        activity={activityToUpdate}
+        updateActivity={updateActivity}
+        deleteActivity={deleteActivity}
+      />
     </FlexColumnCenter>
   );
 }

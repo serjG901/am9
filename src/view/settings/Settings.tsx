@@ -8,11 +8,15 @@ import HighlightText from "../../ui/atom/highlight-text/HighlightText";
 import FlexColumnCenter from "../../ui/atom/flex-column-center/FlexColumnCenter";
 import ManageActivities from "../../ui/thing/manage-activities/ManageActivities";
 import hslToRgb from "../../helpers/hslToRgb";
+import useActionsStore from "../../store/actionsStore";
+import Contents from "../../ui/atom/contents/Contents";
 
 export default function Settings() {
   const [hue, setHue] = useSettingsStore(
     useShallow((state) => [state.hue, state.setHue])
   );
+
+  const [actions] = useActionsStore(useShallow((state) => [state.actions]));
 
   return (
     <Page>
@@ -37,16 +41,20 @@ export default function Settings() {
               hoistValue={setHue}
             />
           </div>
-          <hr />
-          <div>
-            <h2>Manage activities</h2>
-            <ManageActivities />
-          </div>
-          <hr />
-          <div>
-            <h2>Manage data</h2>
-            <ManageData />
-          </div>
+          {actions.length ? (
+            <Contents>
+              <hr />
+              <div>
+                <h2>Manage activities</h2>
+                <ManageActivities />
+              </div>
+              <hr />
+              <div>
+                <h2>Manage data</h2>
+                <ManageData />
+              </div>
+            </Contents>
+          ) : null}
         </FlexColumnCenter>
       </div>
     </Page>

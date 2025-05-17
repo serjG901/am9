@@ -11,8 +11,11 @@ interface ModalComponent {
 export default function Modal({
   id = "modal",
   children = "children",
-  hideModal = () => {},
 }: ModalComponent) {
+  const hideModal = () => {
+    const modalId = document.getElementById(id);
+    modalId?.hidePopover();
+  };
   return (
     <div
       className='modal'

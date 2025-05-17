@@ -11,7 +11,7 @@
     opacity: 1;
     transition: opacity 1s ease-in-out, width 1s ease-in-out;
     transition-delay: 1s;
-    border: 2px solid var(--color-hr);
+    border: 1px solid var(--color-hr);
     @starting-style {
       width: 0%;
       opacity: 0;

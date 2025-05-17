@@ -21,7 +21,7 @@ export interface ActionsStore {
   getActions: () => Action[];
   getEndedActions: () => Action[];
   getActivities: (actions: Action[]) => Activity[];
-  getActivitiesInAction: (actions: Action[]) => Activity[];
+  getActivitiesInAction: (actions: Action[]) => Action[];
 
   focusActivity: Activity;
   setFocusActivity: (activity: Activity) => void;
@@ -44,7 +44,10 @@ export interface ActionsStore {
     period: { start: number; end: number }
   ) => void;
 
-  updateActivity: (oldActivity: Activity, newActivity: Activity) => void;
+  updateActivity: ({
+    oldActivity,
+    newActivity,
+  }: Record<"oldActivity" | "newActivity", Activity>) => void;
   deleteActivity: (activityDelete: Activity) => void;
 }
 
@@ -59,9 +62,9 @@ export interface TimerStore {
 }
 
 export interface PeriodStore {
-  start: number;
-  end: number;
-  setPeriod: (start: number, end: number) => void;
+  start: number | null;
+  end: number | null;
+  setPeriod: (start: number | null, end: number | null) => void;
 }
 
 export interface SettingsStore {

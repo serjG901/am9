@@ -5,7 +5,7 @@ import getDatetimeToString from "../../../helpers/getDatetimeToString";
 interface DatepickerComponent {
   id?: string;
   name?: string;
-  valueFromParent?: number;
+  valueFromParent?: number | null;
   hoistValue?: (value: number) => void;
 }
 
@@ -15,7 +15,7 @@ export default function Datepicker({
   valueFromParent = Date.now(),
   hoistValue = () => {},
 }: DatepickerComponent) {
-  const [state, setState] = useState(valueFromParent);
+  const [state, setState] = useState<number | null>(valueFromParent);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = new Date(e.target.value).getTime();
@@ -35,7 +35,7 @@ export default function Datepicker({
           id={id}
           name={name}
           type='datetime-local'
-          value={getDatetimeToString(state)}
+          value={state === null ? "" : getDatetimeToString(state)}
           onChange={handleChange}
         />
       </label>
