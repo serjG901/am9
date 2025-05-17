@@ -16,15 +16,12 @@ export default function Paginate({
   pageActive = 1,
   pages = 20,
   setPageActive = () => {},
-  /*setPreviousPage = () => {},
-  setNextPage = () => {},*/
 }: PaginateComponent) {
   if (pages < 2) return null;
   const pageActiveRender = pageActive;
   const renderPages = calculatePaginationRenderPage(pageActiveRender, pages);
   return (
     <div className='paginate'>
-     
       {renderPages.map((pageNumber: number | string, index) => {
         if (typeof pageNumber == "string")
           return (
@@ -43,16 +40,6 @@ export default function Paginate({
             />
           );
       })}
-     
     </div>
   );
 }
-/* <PaginatePageButton
-        action={setPreviousPage}
-        direction='left'
-        disabled={pageActiveRender === 1}
-      /> <PaginatePageButton
-        action={setNextPage}
-        direction='right'
-        disabled={pageActiveRender === pages}
-      />*/
