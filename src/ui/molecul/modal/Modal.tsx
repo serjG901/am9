@@ -14,19 +14,17 @@ export default function Modal({
   hideModal = () => {},
 }: ModalComponent) {
   return (
-    <div>
-      <div
-        className='modal'
-        popover='manual'
-        id={id}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className='modal-content'>{children}</div>
-        <div className='hide-modal'>
-          <ActionButton actionWithPayload={hideModal} attention>
-            close
-          </ActionButton>
-        </div>
+    <div
+      className='modal'
+      popover='manual'
+      id={id}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className='modal-content'>{children}</div>
+      <div className='hide-modal'>
+        <ActionButton actionWithPayload={hideModal} attention>
+          close
+        </ActionButton>
       </div>
     </div>
   );

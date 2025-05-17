@@ -41,7 +41,7 @@ export default function FormActivity({
           name='name'
           valueFromParent={name}
           hoistValue={setName}
-          options={activities.map((a) => a.name)}
+          options={[...new Set(activities.map((a) => a.name))]}
         />
       </div>
       <div>

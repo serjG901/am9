@@ -21,36 +21,45 @@ export default function ManageActivities() {
       ])
     );
 
-  const handleShowModal = ({ name, color }: Activity) => {
-    const modalId = document.getElementById(`update-activity-${name + color}`);
-    modalId?.showPopover();
-  };
-
   return (
     <FlexColumnCenter>
       <Collapse title='Activities' collapseLevel='settings'>
         <FlexWrap>
-          {getActivities(actions).map((activity: Activity) => (
-            <Contents key={activity.name + activity.color}>
-              <ActionButton
-                actionWithPayload={handleShowModal}
-                payload={{
-                  name: activity.name,
-                  color: activity.color,
-                }}
-                bgColor={activity.color}
-              >
-                {activity.name}
-              </ActionButton>
-              <Modal id={`update-activity-${activity.name + activity.color}`}>
-                <UpdateActivity
-                  activity={activity}
-                  updateActivity={updateActivity}
-                  deleteActivity={deleteActivity}
-                />
-              </Modal>
-            </Contents>
-          ))}
+          {getActivities(actions).map((activity: Activity) => {
+            const handleShowModal = () => {
+              const modalId = document.getElementById(
+                `update-activity-${activity.name + activity.color}`
+              );
+              modalId?.showPopover();
+            };
+            const handleHideModal = () => {
+              const modalId = document.getElementById(
+                `update-activity-${activity.name + activity.color}`
+              );
+              modalId?.hidePopover();
+            };
+
+            return (
+              <Contents key={activity.name + activity.color}>
+                <ActionButton
+                  actionWithPayload={handleShowModal}
+                  bgColor={activity.color}
+                >
+                  {activity.name}
+                </ActionButton>
+                <Modal
+                  id={`update-activity-${activity.name + activity.color}`}
+                  hideModal={handleHideModal}
+                >
+                  <UpdateActivity
+                    activity={activity}
+                    updateActivity={updateActivity}
+                    deleteActivity={deleteActivity}
+                  />
+                </Modal>
+              </Contents>
+            );
+          })}
         </FlexWrap>
       </Collapse>
     </FlexColumnCenter>
