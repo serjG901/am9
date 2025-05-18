@@ -1,5 +1,4 @@
 .highlight-text {
-  display: inline-block;
   word-break: break-all;
   /*background-color: var(--self-color-bg);*/
   background: linear-gradient(
