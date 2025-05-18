@@ -1,7 +1,7 @@
 .start-stop-action {
-  --font-size-action-element: 4rem;
-  --border-radius-action-element: 24px;
-  --padding-action-element: 2rem;
+  --font-size-action-element: var(--font-size-big-action-element);
+  --border-radius-action-element: var(--border-radius-big-action-element);
+  --padding-action-element: var(--padding-big-action-element);
   .start {
     color: green;
   }
