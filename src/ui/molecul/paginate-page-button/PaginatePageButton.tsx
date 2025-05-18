@@ -3,7 +3,7 @@ import "./style.css";
 import { useEffect, useRef, useState } from "react";
 import ActionButton from "../../atom/action-button/ActionButton";
 import LoadingDots from "../../atom/loading-dots/LoadingDots";
-//import correctionScrollPosition from "../../../helpers/correctionScrollPosition";
+import correctionScrollPosition from "../../../helpers/correctionScrollPosition";
 
 interface PaginatePageButtonComponent {
   dublicate?: boolean;
@@ -40,7 +40,7 @@ export default function PaginatePageButton({
       timer = setTimeout(() => setIsActionStatus(4), 300);
     }
     if (isActionStatus === 4) {
-      //correctionScrollPosition(button.current);
+      correctionScrollPosition(button.current);
       clearTimeout(timer);
       timer = setTimeout(() => setIsActionStatus(1), 2000);
     }
