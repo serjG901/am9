@@ -40,6 +40,9 @@ const useActionsStore = create<ActionsStore>()(
           endTime: null,
         };
         set((state) => ({ actions: [...state.actions, acticity] }));
+        if ("vibrate" in navigator) {
+          navigator.vibrate([300]);
+        }
       },
       stopAction: (activity: Activity) => {
         set((state) => ({
@@ -51,6 +54,9 @@ const useActionsStore = create<ActionsStore>()(
               : action
           ),
         }));
+        if ("vibrate" in navigator) {
+          navigator.vibrate([300, 100, 300]);
+        }
       },
       getIsActivityInAction: (activity: Activity, actions: Action[]) => {
         const findActivityStarted = actions.find(
