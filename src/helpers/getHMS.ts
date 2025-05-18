@@ -7,7 +7,13 @@ export default function getHMS(milliseconds: number) {
   const allMinutes = Math.trunc(milliseconds / minute);
   const allSeconds = Math.trunc(milliseconds / second);
   const hours = allHours ? `${allHours}h ` : "";
-  const minutes = allMinutes ? `${allMinutes - allHours * 60}m ` : "";
-  const seconds = allSeconds ? `${allSeconds - allMinutes * 60}s` : "";
+  const minutesTail = allMinutes - allHours * 60;
+  const minutes = allMinutes
+    ? `${minutesTail < 10 ? `0${minutesTail}` : minutesTail}m `
+    : "";
+  const secondsTail = allSeconds - allMinutes * 60;
+  const seconds = allSeconds
+    ? `${secondsTail < 10 ? `0${secondsTail}` : secondsTail}s`
+    : "";
   return hours + minutes + seconds;
 }

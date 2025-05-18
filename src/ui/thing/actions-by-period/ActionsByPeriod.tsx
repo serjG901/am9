@@ -6,6 +6,8 @@ import HighlightText from "../../atom/highlight-text/HighlightText";
 import Collapse from "../../atom/collapse/Collapse";
 import getPeriodByTime from "../../../helpers/getPeriodByTime";
 import getHMS from "../../../helpers/getHMS";
+import Paginate from "../../substance/paginate/Paginate";
+import { useState } from "react";
 
 interface ActionsByDaysComponent {
   actions: Action[];
@@ -24,6 +26,9 @@ export default function ActionsByDays({
   endPeriod = null,
   periodType = "days",
 }: ActionsByDaysComponent) {
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
+
   const actionsByPeriod =
     startPeriod === null || endPeriod === null
       ? actions
@@ -43,8 +48,15 @@ export default function ActionsByDays({
           action.activity.color === focusActivity.color
       );
 
-  const actionsByDays = Object.groupBy(filtredActions, ({ startTime }) =>
-    getPeriodByTime(startTime, periodType)
+  const actionsByPeriodType = Object.entries(
+    Object.groupBy(filtredActions, ({ startTime }) =>
+      getPeriodByTime(startTime, periodType)
+    )
+  );
+
+  const actionsByPage = actionsByPeriodType.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
   );
 
   return (
@@ -52,10 +64,9 @@ export default function ActionsByDays({
       <Collapse
         title={
           <div>
-            {periodType}
+            {periodType}{" "}
             {!focusActivity ? null : (
               <Contents>
-                {" "}
                 for{" "}
                 <HighlightText bgColor={focusActivity.color} simple padding>
                   {focusActivity.name}
@@ -64,14 +75,14 @@ export default function ActionsByDays({
             )}
           </div>
         }
-        collapseLevel='menu'
+        collapseLevel={periodType}
       >
         <div className='actions-by-period'>
           <Grid columns={2}>
             <div>activity</div>
             <div>spend</div>
 
-            {Object.entries(actionsByDays).map(([day, actionsByDay]) => {
+            {actionsByPage.map(([day, actionsByDay]) => {
               return !actionsByDay ? null : (
                 <Contents key={day}>
                   <div className='day'>{day}</div>
@@ -114,6 +125,11 @@ export default function ActionsByDays({
             })}
           </Grid>
         </div>
+        <Paginate
+          pageActive={page}
+          pages={Math.ceil(actionsByPeriodType.length / itemsPerPage)}
+          setPageActive={setPage}
+        />
       </Collapse>
     </Contents>
   );

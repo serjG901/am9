@@ -6,6 +6,8 @@ import HighlightText from "../../atom/highlight-text/HighlightText";
 import toLocalDateTime from "../../../helpers/toLocalDateTime";
 import getHMS from "../../../helpers/getHMS";
 import Collapse from "../../atom/collapse/Collapse";
+import Paginate from "../../substance/paginate/Paginate";
+import { useState } from "react";
 
 interface AllActionsComponent {
   actions: Action[];
@@ -22,6 +24,9 @@ export default function AllActions({
   startPeriod = null,
   endPeriod = null,
 }: AllActionsComponent) {
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
+
   const actionsByPeriod =
     startPeriod === null || endPeriod === null
       ? actions
@@ -40,6 +45,11 @@ export default function AllActions({
           action.activity.name === focusActivity.name &&
           action.activity.color === focusActivity.color
       );
+
+  const actionsByPage = filtredActions.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
   return (
     <Contents>
       {startPeriod === null || endPeriod === null ? null : (
@@ -51,10 +61,9 @@ export default function AllActions({
       <Collapse
         title={
           <div>
-            actions
+            actions{" "}
             {!focusActivity ? null : (
               <Contents>
-                {" "}
                 by{" "}
                 <HighlightText bgColor={focusActivity.color} simple padding>
                   {focusActivity.name}
@@ -72,7 +81,7 @@ export default function AllActions({
             <div>stop</div>
             <div>spend</div>
             <div className='divider'></div>
-            {filtredActions.map(({ activity, startTime, endTime }, i) => {
+            {actionsByPage.map(({ activity, startTime, endTime }, i) => {
               return (
                 <Contents key={activity.name + activity.color + i}>
                   <div>
@@ -93,6 +102,11 @@ export default function AllActions({
             })}
           </Grid>
         </div>
+        <Paginate
+          pageActive={page}
+          pages={Math.ceil(filtredActions.length / itemsPerPage)}
+          setPageActive={setPage}
+        />
       </Collapse>
     </Contents>
   );

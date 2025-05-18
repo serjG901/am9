@@ -42,6 +42,14 @@ export default function ManageData() {
     const file = e.target.files![0];
     const contents = await file.text();
     const db = JSON.parse(contents);
+    if (Array.isArray(db)) {
+      const actions = db.map((dometer) => ({
+        activity: { name: dometer.type, color: "" },
+        startTime: dometer.start,
+        endTime: dometer.end,
+      }));
+      console.log(actions);
+    }
     Object.keys(db).forEach((key: string) => {
       if (key === `${appName}-actions`) setState(db[key]);
     });

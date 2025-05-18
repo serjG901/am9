@@ -23,6 +23,7 @@ import { useEffect } from "react";
 import AllActions from "../../ui/thing/all-actions/AllActions";
 import Contents from "../../ui/atom/contents/Contents";
 import ActionsByPeriod from "../../ui/thing/actions-by-period/ActionsByPeriod";
+import FlexWrap from "../../ui/atom/flex-wrap/FlexWrap";
 
 interface ActionsComponent {
   useActionsStore: UseBoundStore<
@@ -131,39 +132,40 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 startPeriod={startPeriod}
                 endPeriod={endPeriod}
               />
-
-              <ActionsByPeriod
-                actions={actions}
-                focusActivity={isFiltredByFocus ? focusActivity : null}
-                timestamp={currentTimestamp}
-                startPeriod={startPeriod}
-                endPeriod={endPeriod}
-                periodType='days'
-              />
-              <ActionsByPeriod
-                actions={actions}
-                focusActivity={isFiltredByFocus ? focusActivity : null}
-                timestamp={currentTimestamp}
-                startPeriod={startPeriod}
-                endPeriod={endPeriod}
-                periodType='weeks'
-              />
-              <ActionsByPeriod
-                actions={actions}
-                focusActivity={isFiltredByFocus ? focusActivity : null}
-                timestamp={currentTimestamp}
-                startPeriod={startPeriod}
-                endPeriod={endPeriod}
-                periodType='months'
-              />
-              <ActionsByPeriod
-                actions={actions}
-                focusActivity={isFiltredByFocus ? focusActivity : null}
-                timestamp={currentTimestamp}
-                startPeriod={startPeriod}
-                endPeriod={endPeriod}
-                periodType='years'
-              />
+              <FlexWrap>
+                <ActionsByPeriod
+                  actions={actions}
+                  focusActivity={isFiltredByFocus ? focusActivity : null}
+                  timestamp={currentTimestamp}
+                  startPeriod={startPeriod}
+                  endPeriod={endPeriod}
+                  periodType='days'
+                />
+                <ActionsByPeriod
+                  actions={actions}
+                  focusActivity={isFiltredByFocus ? focusActivity : null}
+                  timestamp={currentTimestamp}
+                  startPeriod={startPeriod}
+                  endPeriod={endPeriod}
+                  periodType='weeks'
+                />
+                <ActionsByPeriod
+                  actions={actions}
+                  focusActivity={isFiltredByFocus ? focusActivity : null}
+                  timestamp={currentTimestamp}
+                  startPeriod={startPeriod}
+                  endPeriod={endPeriod}
+                  periodType='months'
+                />
+                <ActionsByPeriod
+                  actions={actions}
+                  focusActivity={isFiltredByFocus ? focusActivity : null}
+                  timestamp={currentTimestamp}
+                  startPeriod={startPeriod}
+                  endPeriod={endPeriod}
+                  periodType='years'
+                />
+              </FlexWrap>
             </Contents>
           )}
         </FlexColumnCenter>
