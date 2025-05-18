@@ -12,7 +12,6 @@ import {
 //import ToTop from "../../ui/molecul/to-top/ToTop";
 import FlexColumnCenter from "../../ui/atom/flex-column-center/FlexColumnCenter";
 //import StatisticByPeriod from "../../ui/substance/statistic-by-period/StatisticByPeriod";
-import Collapse from "../../ui/atom/collapse/Collapse";
 import FocusActivity from "../../ui/substance/focus-activity/FocusActivity";
 import Checked from "../../ui/atom/checked/Checked";
 import StartStopAction from "../../ui/substance/start-stop-action/StartStopAction";
@@ -21,6 +20,9 @@ import Page from "../../ui/atom/page/Page";
 import FormDataRange from "../../ui/molecul/form-date-range/FormDateRange";
 import useTimerStore from "../../store/timerStore";
 import { useEffect } from "react";
+import AllActions from "../../ui/thing/all-actions/AllActions";
+import Contents from "../../ui/atom/contents/Contents";
+import ActionsByPeriod from "../../ui/thing/actions-by-period/ActionsByPeriod";
 
 interface ActionsComponent {
   useActionsStore: UseBoundStore<
@@ -106,22 +108,64 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
             maybeActivities={getActivities(actions)}
             hoistActivity={setFocusActivity}
           />
-          <hr />
-          <h2>Statistic</h2>
-          <FormDataRange
-            key={"FormDataRange"}
-            period={{ start: startPeriod, end: endPeriod }}
-            setPeriod={setPeriod}
-          />
-          <Checked
-            id={"filter"}
-            name={`filter by ${focusActivity.name}`}
-            valueFromParent={isFiltredByFocus}
-            hoistValue={toggleFilterByFocus}
-          />
-          <Collapse title='stat' collapseLevel='menu'>
-            <FlexColumnCenter></FlexColumnCenter>
-          </Collapse>
+          {!actions.length ? null : (
+            <Contents>
+              <hr />
+              <h2>Statistic</h2>
+              <FormDataRange
+                key={"FormDataRange"}
+                period={{ start: startPeriod, end: endPeriod }}
+                setPeriod={setPeriod}
+              />
+              <Checked
+                id={"filter"}
+                name={`filter by ${focusActivity.name}`}
+                valueFromParent={isFiltredByFocus}
+                hoistValue={toggleFilterByFocus}
+              />
+
+              <AllActions
+                actions={actions}
+                focusActivity={isFiltredByFocus ? focusActivity : null}
+                timestamp={currentTimestamp}
+                startPeriod={startPeriod}
+                endPeriod={endPeriod}
+              />
+
+              <ActionsByPeriod
+                actions={actions}
+                focusActivity={isFiltredByFocus ? focusActivity : null}
+                timestamp={currentTimestamp}
+                startPeriod={startPeriod}
+                endPeriod={endPeriod}
+                periodType='days'
+              />
+              <ActionsByPeriod
+                actions={actions}
+                focusActivity={isFiltredByFocus ? focusActivity : null}
+                timestamp={currentTimestamp}
+                startPeriod={startPeriod}
+                endPeriod={endPeriod}
+                periodType='weeks'
+              />
+              <ActionsByPeriod
+                actions={actions}
+                focusActivity={isFiltredByFocus ? focusActivity : null}
+                timestamp={currentTimestamp}
+                startPeriod={startPeriod}
+                endPeriod={endPeriod}
+                periodType='months'
+              />
+              <ActionsByPeriod
+                actions={actions}
+                focusActivity={isFiltredByFocus ? focusActivity : null}
+                timestamp={currentTimestamp}
+                startPeriod={startPeriod}
+                endPeriod={endPeriod}
+                periodType='years'
+              />
+            </Contents>
+          )}
         </FlexColumnCenter>
       </div>
     </Page>

@@ -1,0 +1,9 @@
+.all-actions {
+    font-size: 0.9rem;
+  .divider {
+    grid-column: 1/5;
+    height: 1px;
+    background-color: var(--color-text-main);
+    opacity: 0.2;
+  }
+}

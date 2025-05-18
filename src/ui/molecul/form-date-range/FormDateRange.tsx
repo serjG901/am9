@@ -38,7 +38,7 @@ export default function FormDateRange({
   return (
     <div className='form-date-range'>
       <FlexColumnCenter>
-        <Collapse collapseLevel='menu' title={"period"}>
+        <Collapse collapseLevel='period' title={"period"}>
           <FlexColumnCenter>
             <Datepicker
               key='start'

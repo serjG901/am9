@@ -1,0 +1,15 @@
+.actions-by-period {
+  font-size: 0.9rem;
+  .divider {
+    grid-column: 1/3;
+    height: 1px;
+    background-color: var(--color-text-main);
+    opacity: 0.2;
+  }
+  .day {
+    grid-column: 1/3;
+    color: var(--color-black);
+    background-color: var(--color-white);
+    opacity: 0.5;
+  }
+}

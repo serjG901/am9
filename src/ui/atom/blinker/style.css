@@ -1,5 +1,6 @@
 .blinker {
   animation: blinker var(--frequency) linear infinite alternate;
+  animation-delay: var(--delay);
 }
 
 @keyframes blinker {

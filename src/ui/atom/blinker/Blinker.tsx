@@ -4,12 +4,14 @@ interface BlinkerComponent {
   children?: React.ReactNode;
   isBlink?: boolean;
   frequency?: number;
+  delay?: number;
 }
 
 export default function Blinker({
   children = "",
   isBlink = true,
   frequency = 1,
+  delay = 0,
 }: BlinkerComponent) {
   return (
     <div
@@ -17,6 +19,7 @@ export default function Blinker({
       style={
         {
           "--frequency": `${Math.round((1000 * 1) / frequency)}ms`,
+          "--delay": `${delay}ms`,
         } as React.CSSProperties
       }
     >
