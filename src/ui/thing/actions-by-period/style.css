@@ -4,7 +4,7 @@
     grid-column: 1/3;
     height: 1px;
     background-color: var(--color-text-main);
-    opacity: 0.2;
+    opacity: 0.1;
   }
   .day {
     grid-column: 1/3;

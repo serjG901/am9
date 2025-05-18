@@ -8,6 +8,7 @@ import getHMS from "../../../helpers/getHMS";
 import Collapse from "../../atom/collapse/Collapse";
 import Paginate from "../../substance/paginate/Paginate";
 import { useState } from "react";
+import Blinker from "../../atom/blinker/Blinker";
 
 interface AllActionsComponent {
   actions: Action[];
@@ -85,9 +86,11 @@ export default function AllActions({
               return (
                 <Contents key={activity.name + activity.color + i}>
                   <div>
-                    <HighlightText bgColor={activity.color} simple padding>
-                      {activity.name}
-                    </HighlightText>
+                    <Blinker isBlink={!endTime}>
+                      <HighlightText bgColor={activity.color} simple padding>
+                        {activity.name}
+                      </HighlightText>
+                    </Blinker>
                   </div>
                   <div>{toLocalDateTime(startTime)}</div>
                   <div>{endTime ? toLocalDateTime(endTime) : "in action"}</div>

@@ -5,10 +5,10 @@
 
 @keyframes blinker {
   0% {
-    opacity: 0;
+    opacity: var(--deep);
   }
   50% {
-    opacity: 0.5;
+    opacity: calc(var(--deep) + 0.5);
   }
   100% {
     opacity: 1;

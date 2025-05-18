@@ -87,8 +87,9 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
 
   return (
     <Page>
-      <div className='payments-view'>
-        <h1>Action</h1>
+      <div className='actions-view'>
+        <h1>Actions</h1>
+        current time: {new Date(currentTimestamp).toLocaleString()}
         <hr />
         <FlexColumnCenter>
           <StartStopAction

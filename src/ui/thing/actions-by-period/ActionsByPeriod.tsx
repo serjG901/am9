@@ -8,6 +8,7 @@ import getPeriodByTime from "../../../helpers/getPeriodByTime";
 import getHMS from "../../../helpers/getHMS";
 import Paginate from "../../substance/paginate/Paginate";
 import { useState } from "react";
+import Blinker from "../../atom/blinker/Blinker";
 
 interface ActionsByDaysComponent {
   actions: Action[];
@@ -27,7 +28,18 @@ export default function ActionsByDays({
   periodType = "days",
 }: ActionsByDaysComponent) {
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = (() => {
+    switch (periodType) {
+      case "years":
+        return 2;
+      case "months":
+        return 3;
+      case "weeks":
+        return 4;
+      default:
+        return 7;
+    }
+  })();
 
   const actionsByPeriod =
     startPeriod === null || endPeriod === null
@@ -96,13 +108,15 @@ export default function ActionsByDays({
                     return (
                       <Contents key={activityString}>
                         <div>
-                          <HighlightText
-                            bgColor={activityString.split("{separator}")[1]}
-                            simple
-                            padding
-                          >
-                            {activityString.split("{separator}")[0]}
-                          </HighlightText>
+                          <Blinker isBlink={!!actions!.find((a) => !a.endTime)}>
+                            <HighlightText
+                              bgColor={activityString.split("{separator}")[1]}
+                              simple
+                              padding
+                            >
+                              {activityString.split("{separator}")[0]}
+                            </HighlightText>
+                          </Blinker>
                         </div>
                         <div>
                           {getHMS(

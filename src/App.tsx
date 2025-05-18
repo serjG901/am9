@@ -25,12 +25,12 @@ function App() {
     actions: <ActionsPage />,
     settings: <SettingsApp />,
   };
-
+  /*
   const icons: Record<string, ReactNode> = {
     actions: <span>&#10070;</span>,
     settings: <span>&#8984;</span>,
   };
-
+*/
   const handleActionMenu = (payload: string) => {
     setPage(payload);
     window.history.pushState({ page: payload }, "", `/${appName}/${payload}`);
@@ -64,7 +64,7 @@ function App() {
               actionWithPayload={handleActionMenu}
               payload={opt}
             >
-              {icons[opt]}
+              {opt}
             </ActionButton>
           );
         })}

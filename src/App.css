@@ -84,7 +84,6 @@ input:focus-visible {
   outline: 1px solid var(--color-border-action-element-accent);
 }
 
-
 .menu {
   width: 100%;
   display: flex;
@@ -92,4 +91,7 @@ input:focus-visible {
   summary {
     text-align: right;
   }
+}
+.menu[data-side="left"] {
+  justify-content: flex-start;
 }
