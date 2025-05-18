@@ -1,5 +1,5 @@
 .highlight-text {
-  word-break: break-all;
+  word-break: break-word;
   /*background-color: var(--self-color-bg);*/
   background: linear-gradient(
       100deg,
@@ -48,11 +48,18 @@
 }
 
 .highlight-text[data-padding="padding"][data-simple="simple"]::after {
-  content: " ";
-  display: inline-block;
-  width: 1ch;
+  display: none;
+}
+.highlight-text[data-padding="padding"][data-simple="simple"]::before {
+  display: none;
 }
 
 .highlight-text[data-simple="simple"] {
   background: var(--self-color-bg);
+  display: inline-block;
+  padding-inline: 1ch;
+}
+
+div:has(.highlight-text) {
+  line-height: normal;
 }
