@@ -131,10 +131,7 @@ const useActionsStore = create<ActionsStore>()(
           focusActivity:
             state.focusActivity.name === oldActivity.name &&
             state.focusActivity.color === oldActivity.color
-              ? {
-                  ...state.focusActivity,
-                  activity: newActivity,
-                }
+              ? newActivity
               : state.focusActivity,
         }));
       },
