@@ -128,6 +128,14 @@ const useActionsStore = create<ActionsStore>()(
                 }
               : action
           ),
+          focusActivity:
+            state.focusActivity.name === oldActivity.name &&
+            state.focusActivity.color === oldActivity.color
+              ? {
+                  ...state.focusActivity,
+                  activity: newActivity,
+                }
+              : state.focusActivity,
         }));
       },
       deleteActivity: (activityDelete) => {
@@ -137,6 +145,11 @@ const useActionsStore = create<ActionsStore>()(
               action.activity.name !== activityDelete.name &&
               action.activity.color !== activityDelete.color
           ),
+          focusActivity:
+            state.focusActivity.name === activityDelete.name &&
+            state.focusActivity.color === activityDelete.color
+              ? { name: "", color: "" }
+              : state.focusActivity,
         }));
       },
     }),
