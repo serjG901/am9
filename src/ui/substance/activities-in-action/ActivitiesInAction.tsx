@@ -23,7 +23,7 @@ export default function ActivitiesInAction({
     (<div className='activity-in-action'>
       <FlexColumnCenter>
         <Collapse
-          collapseLevel='actions'
+          collapseLevel='activities'
           title={`in action (${activitiesInAction.length})`}
           openFromParrent={!!activitiesInAction.length}
         >
