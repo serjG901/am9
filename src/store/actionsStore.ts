@@ -39,7 +39,12 @@ const useActionsStore = create<ActionsStore>()(
           startTime: Date.now(),
           endTime: null,
         };
-        set((state) => ({ actions: [...state.actions, acticity] }));
+        set((state) => ({ actions: [...state.actions, acticity],
+          focusActivity:
+            state.focusActivity.name === activity.name &&
+            state.focusActivity.color === activity.color
+              ? { name: "", color: "" }
+              : state.focusActivity, }));
         if ("vibrate" in navigator) {
           navigator.vibrate([300]);
         }
@@ -52,8 +57,13 @@ const useActionsStore = create<ActionsStore>()(
             action.activity.color === activity.color
               ? { ...action, endTime: Date.now() }
               : action
-          ),
-        }));
+          )
+        }));,
+          focusActivity:
+            state.focusActivity.name === activity.name &&
+            state.focusActivity.color === activity.color
+              ? { name: "", color: "" }
+              : state.focusActivity,
         if ("vibrate" in navigator) {
           navigator.vibrate([300, 100, 300]);
         }
