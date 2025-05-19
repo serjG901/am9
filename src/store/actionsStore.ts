@@ -34,12 +34,12 @@ const useActionsStore = create<ActionsStore>()(
         set((state) => ({ isFiltredByFocus: !state.isFiltredByFocus })),
 
       startAction: (activity: Activity) => {
-        const acticity: Action = {
+        const action: Action = {
           activity,
           startTime: Date.now(),
           endTime: null,
         };
-        set((state) => ({ actions: [...state.actions, acticity],
+        set((state) => ({ actions: [...state.actions, action],
           focusActivity:
             state.focusActivity.name === activity.name &&
             state.focusActivity.color === activity.color
@@ -57,13 +57,13 @@ const useActionsStore = create<ActionsStore>()(
             action.activity.color === activity.color
               ? { ...action, endTime: Date.now() }
               : action
-          )
-        }));,
+          ),
           focusActivity:
             state.focusActivity.name === activity.name &&
             state.focusActivity.color === activity.color
               ? { name: "", color: "" }
               : state.focusActivity,
+        }));
         if ("vibrate" in navigator) {
           navigator.vibrate([300, 100, 300]);
         }
