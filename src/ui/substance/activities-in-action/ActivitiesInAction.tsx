@@ -19,8 +19,8 @@ export default function ActivitiesInAction({
   hoistActivity = () => {},
   timestamp = Date.now(),
 }: ActivitiesInActionComponent) {
-  return (
-    <div className='activity-in-action'>
+  return !activitiesInAction.length ? null :
+    (<div className='activity-in-action'>
       <FlexColumnCenter>
         <Collapse
           collapseLevel='actions'
