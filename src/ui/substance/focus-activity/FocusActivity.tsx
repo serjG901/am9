@@ -21,7 +21,7 @@ export default function FocusActivity({
     <div className='focus-activity'>
       <FlexColumnCenter>
         {maybeActivities.length ? (
-          <Collapse collapseLevel='menu' title='activities'>
+          <Collapse collapseLevel='activities' title='activities'>
             <FlexWrap>
               {maybeActivities.map((activity) => (
                 <ActionButton
