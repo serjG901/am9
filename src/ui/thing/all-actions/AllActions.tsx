@@ -78,15 +78,15 @@ export default function AllActions({
       >
         <div className='all-actions'>
           <Grid columns={3}>
-            <div>activity</div>
-            <div>stop/start</div>
-            <div>spend</div>
+            <div className="header">activity</div>
+            <div className="header">stop/start</div>
+            <div className="header">spend</div>
             <div className='divider'></div>
             {actionsByPage.map(({ activity, startTime, endTime }, i) => {
               return (
                 <Contents key={activity.name + activity.color + i}>
                   <div>
-                    <Blinker isBlink={!endTime}>
+                    <Blinker isBlink={!endTime} delay={i * 333}>
                       <HighlightText bgColor={activity.color} simple padding>
                         {activity.name}
                       </HighlightText>

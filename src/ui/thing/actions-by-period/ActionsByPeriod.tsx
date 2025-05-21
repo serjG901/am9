@@ -91,8 +91,8 @@ export default function ActionsByDays({
       >
         <div className='actions-by-period'>
           <Grid columns={2}>
-            <div>activity</div>
-            <div>spend</div>
+            <div className="header">activity</div>
+            <div className="header">spend</div>
 
             {actionsByPage.map(([day, actionsByDay]) => {
               return !actionsByDay ? null : (
@@ -104,11 +104,14 @@ export default function ActionsByDays({
                       ({ activity }) =>
                         `${activity.name}{separator}${activity.color}`
                     )
-                  ).map(([activityString, actions]) => {
+                  ).map(([activityString, actions], i) => {
                     return (
                       <Contents key={activityString}>
                         <div>
-                          <Blinker isBlink={!!actions!.find((a) => !a.endTime)}>
+                          <Blinker
+                            isBlink={!!actions!.find((a) => !a.endTime)}
+                            delay={i * 333}
+                          >
                             <HighlightText
                               bgColor={activityString.split("{separator}")[1]}
                               simple

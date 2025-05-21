@@ -25,7 +25,7 @@
   }
   .collapse-content {
     max-width: calc(80dvw - 2rem);
-    padding: var(--padding-m);
+
     opacity: 1;
     margin-inline: auto;
     transition: opacity 1s 0.3s;

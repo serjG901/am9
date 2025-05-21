@@ -4,4 +4,7 @@
   gap: var(--gap-s);
   justify-content: center;
   align-items: center;
+  .header {
+    color: var(--color-text-description);
+  }
 }
