@@ -34,9 +34,9 @@ export default function StartStopAction({
       >
         <FlexColumnCenter>
           {isActivityInAction ? (
-            "End"
+            <div className='action'>End</div>
           ) : (
-           "Start"
+           <div className='action'>Start</div>
           )}
           {activity.name && (
             <Blinker isBlink={isActivityInAction} deep={0.2}>

@@ -44,7 +44,7 @@
   --color-hr: var(--color-neutral);
 
   --font-size-big-action-element: 4rem;
-  --border-radius-big-action-element: 24px;
+  --border-radius-big-action-element: 4px;
   --padding-big-action-element: 2rem;
 }
 

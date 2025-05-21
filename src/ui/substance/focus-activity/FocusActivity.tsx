@@ -46,6 +46,7 @@ export default function FocusActivity({
                 : "activities"
             }
           >
+            <br />
             {!activitiesInAction.length ? null : (
               <Contents>
                 <div className='activity-in-action'>
@@ -67,7 +68,7 @@ export default function FocusActivity({
                               {toNormalDateTime(startTime)}
                             </div>
                             <div className='time'>
-                              {getHMS(timestamp - startTime) || '00s'}
+                              {getHMS(timestamp - startTime) || "00s"}
                             </div>
                           </ActionButton>
                         </Blinker>
@@ -94,6 +95,7 @@ export default function FocusActivity({
                 </ActionButton>
               ))}
             </FlexWrap>
+            <br />
           </Collapse>
         ) : null}
         <FormActivity

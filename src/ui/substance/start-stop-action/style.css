@@ -1,11 +1,16 @@
 .start-stop-action {
+  position: relative;
   --font-size-action-element: var(--font-size-big-action-element);
   --border-radius-action-element: var(--border-radius-big-action-element);
   --padding-action-element: var(--padding-big-action-element);
-  .start {
-    color: green;
+  .action {
+    transition: transform 0.5s linear;
   }
-  .stop {
-    color: orange;
+  .action:has(~ div) {
+    transform: translateY(calc(-1*var(--padding-big-action-element)));
+  }
+  .action + div{
+    position: relative;
+    top: calc(-1*var(--padding-big-action-element));
   }
 }
