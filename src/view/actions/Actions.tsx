@@ -126,7 +126,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
               />
 
               <AllActions
-                actions={actions}
+                actions={actions.filter(a => !getActivitiesInAction(actions).find(act => act.name === a.name))}</AllActions>}
                 focusActivity={isFiltredByFocus ? focusActivity : null}
                 timestamp={currentTimestamp}
                 startPeriod={startPeriod}
