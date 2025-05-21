@@ -8,3 +8,11 @@
     }
   }
 }
+
+.activity-in-action {
+  width: 100%;
+  .time {
+    font-size: 0.7rem;
+  }
+}
+

@@ -11,7 +11,7 @@ interface BlinkerComponent {
 export default function Blinker({
   children = "",
   isBlink = true,
-  frequency = 1,
+  frequency = 2,
   delay = 0,
   deep = 0.5,
 }: BlinkerComponent) {

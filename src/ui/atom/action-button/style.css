@@ -9,7 +9,7 @@
   font-family: inherit;
   background-color: var(--self-color-bg, var(--color-bg-button));
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.25s, heigth 1s;
   --self-color: color(
     from var(--self-color-bg) srgb
       calc(1 - round(calc(r + calc(g * 1.6) + calc(b * 0.4)) / 3, 1))

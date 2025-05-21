@@ -15,7 +15,7 @@ import FlexColumnCenter from "../../ui/atom/flex-column-center/FlexColumnCenter"
 import FocusActivity from "../../ui/substance/focus-activity/FocusActivity";
 import Checked from "../../ui/atom/checked/Checked";
 import StartStopAction from "../../ui/substance/start-stop-action/StartStopAction";
-import ActivitiesInAction from "../../ui/substance/activities-in-action/ActivitiesInAction";
+//import ActivitiesInAction from "../../ui/substance/activities-in-action/ActivitiesInAction";
 import Page from "../../ui/atom/page/Page";
 import FormDataRange from "../../ui/molecul/form-date-range/FormDateRange";
 import useTimerStore from "../../store/timerStore";
@@ -98,13 +98,11 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
             stopAction={stopAction}
             isActivityInAction={getIsActivityInAction(focusActivity, actions)}
           />
-          <ActivitiesInAction
-            activitiesInAction={getActivitiesInAction(actions)}
-            hoistActivity={setFocusActivity}
-            timestamp={currentTimestamp}
-          />
+
           <hr />
           <FocusActivity
+            timestamp={currentTimestamp}
+            activitiesInAction={getActivitiesInAction(actions)}
             focusActivity={focusActivity}
             maybeActivities={getActivities(actions)}
             hoistActivity={setFocusActivity}
@@ -126,7 +124,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
               />
 
               <AllActions
-                actions={actions.filter(a => !getActivitiesInAction(actions).find(act => act.name === a.name))}</AllActions>}
+                actions={actions}
                 focusActivity={isFiltredByFocus ? focusActivity : null}
                 timestamp={currentTimestamp}
                 startPeriod={startPeriod}
@@ -171,7 +169,11 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
       </div>
     </Page>
   );
-} /*
+} /* <ActivitiesInAction
+            activitiesInAction={getActivitiesInAction(actions)}
+            hoistActivity={setFocusActivity}
+            timestamp={currentTimestamp}
+          />
  <StatisticByPeriod period='days' actions={getActionsByDays()} />
               <StatisticByPeriod period='weeks' actions={getActionsByWeek()} />
               <StatisticByPeriod
