@@ -9,6 +9,7 @@ import Collapse from "../../atom/collapse/Collapse";
 import Paginate from "../../substance/paginate/Paginate";
 import { useState } from "react";
 import Blinker from "../../atom/blinker/Blinker";
+import FlexColumnCenter from "../../atom/flex-column-center/FlexColumnCenter";
 
 interface AllActionsComponent {
   actions: Action[];
@@ -76,10 +77,9 @@ export default function AllActions({
         collapseLevel='menu'
       >
         <div className='all-actions'>
-          <Grid columns={4}>
+          <Grid columns={3}>
             <div>activity</div>
-            <div>start</div>
-            <div>stop</div>
+            <div>stop/start</div>
             <div>spend</div>
             <div className='divider'></div>
             {actionsByPage.map(({ activity, startTime, endTime }, i) => {
@@ -92,8 +92,12 @@ export default function AllActions({
                       </HighlightText>
                     </Blinker>
                   </div>
-                  <div>{toLocalDateTime(startTime)}</div>
-                  <div>{endTime ? toLocalDateTime(endTime) : "in action"}</div>
+                  <FlexColumnCenter>
+                    <div>
+                      {endTime ? toLocalDateTime(endTime) : "in action"}
+                    </div>
+                    <div>{toLocalDateTime(startTime)}</div>
+                  </FlexColumnCenter>
                   <div>
                     {getHMS(
                       endTime ? endTime - startTime : timestamp - startTime
