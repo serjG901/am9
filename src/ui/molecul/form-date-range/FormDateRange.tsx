@@ -52,6 +52,7 @@ export default function FormDateRange({
               valueFromParent={end}
               hoistValue={setEnd}
             />
+            <br />
           </FlexColumnCenter>
         </Collapse>
         {start !== null && end !== null ? (
