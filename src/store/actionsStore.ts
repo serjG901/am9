@@ -26,8 +26,12 @@ const useActionsStore = create<ActionsStore>()(
         actions.filter((action) => !action.endTime),
 
       focusActivity: { name: "", color: "" },
-      setFocusActivity: (activity: Activity) =>
-        set({ focusActivity: activity || { name: "", color: "" } }),
+      setFocusActivity: (activity: Activity) => {
+        set({ focusActivity: activity || { name: "", color: "" } });
+        if ("vibrate" in navigator) {
+          navigator.vibrate([200]);
+        }
+      },
 
       isFiltredByFocus: false,
       toggleFilterByFocus: () =>
@@ -39,12 +43,14 @@ const useActionsStore = create<ActionsStore>()(
           startTime: Date.now(),
           endTime: null,
         };
-        set((state) => ({ actions: [...state.actions, action],
+        set((state) => ({
+          actions: [...state.actions, action],
           focusActivity:
             state.focusActivity.name === activity.name &&
             state.focusActivity.color === activity.color
               ? { name: "", color: "" }
-              : state.focusActivity, }));
+              : state.focusActivity,
+        }));
         if ("vibrate" in navigator) {
           navigator.vibrate([300]);
         }
