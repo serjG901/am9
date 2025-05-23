@@ -35,6 +35,7 @@ export default function ManageActivities() {
     <FlexColumnCenter>
       <Collapse title='activities' collapseLevel='settings'>
         <FlexWrap>
+          <br />
           {getActivities(actions).map((activity: Activity) => {
             return (
               <Contents key={activity.name + activity.color}>
@@ -48,6 +49,7 @@ export default function ManageActivities() {
               </Contents>
             );
           })}
+          <br />
         </FlexWrap>
       </Collapse>
 
