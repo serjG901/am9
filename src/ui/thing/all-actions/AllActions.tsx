@@ -75,7 +75,6 @@ export default function AllActions({
         }
         collapseLevel='menu'
       >
-        <br />
         <div className='all-actions'>
           <Grid columns={3}>
             <div className='header'>activity</div>

@@ -89,12 +89,10 @@ export default function ActionsByDays({
         }
         collapseLevel={periodType}
       >
-        <br />
         <div className='actions-by-period'>
           <Grid columns={2}>
             <div className='header'>activity</div>
             <div className='header'>spend</div>
-
             {actionsByPage.map(([day, actionsByDay]) => {
               return !actionsByDay ? null : (
                 <Contents key={day}>

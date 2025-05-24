@@ -46,7 +46,6 @@ export default function FocusActivity({
                 : "activities"
             }
           >
-            <br />
             {!activitiesInAction.length ? null : (
               <Contents>
                 <div className='activity-in-action'>
@@ -79,7 +78,6 @@ export default function FocusActivity({
                 {pendingActivities.length ? <hr /> : null}
               </Contents>
             )}
-
             <FlexWrap>
               {pendingActivities.map((activity) => (
                 <ActionButton
@@ -95,7 +93,6 @@ export default function FocusActivity({
                 </ActionButton>
               ))}
             </FlexWrap>
-            <br />
           </Collapse>
         ) : null}
         <FormActivity
