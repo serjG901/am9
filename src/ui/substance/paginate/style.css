@@ -6,13 +6,11 @@
   margin-inline: auto;
   margin-block: 1rem;
   justify-content: center;
-}
-
-.rated-movies .paginate {
-  justify-content: center;
-}
-
-.paginate-dots {
-  display: flex;
-  align-items: self-end;
+  .paginate-dots {
+    display: flex;
+    align-items: self-end;
+  }
+  .add-to-page {
+    width: 100%;
+  }
 }

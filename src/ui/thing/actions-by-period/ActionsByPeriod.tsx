@@ -28,7 +28,7 @@ export default function ActionsByDays({
   periodType = "days",
 }: ActionsByDaysComponent) {
   const [page, setPage] = useState(1);
-  const itemsPerPage = (() => {
+  const itemsPerOnePage = (() => {
     switch (periodType) {
       case "years":
         return 2;
@@ -40,6 +40,7 @@ export default function ActionsByDays({
         return 7;
     }
   })();
+  const [itemsPerPage, setItemsPerPage] = useState(itemsPerOnePage);
 
   const actionsByPeriod =
     startPeriod === null || endPeriod === null
@@ -145,6 +146,11 @@ export default function ActionsByDays({
           pageActive={page}
           pages={Math.ceil(actionsByPeriodType.length / itemsPerPage)}
           setPageActive={setPage}
+          addItemsPerPage={() =>
+            setItemsPerPage((state) =>
+              state < filtredActions.length ? state + itemsPerOnePage : state
+            )
+          }
         />
       </Collapse>
     </Contents>

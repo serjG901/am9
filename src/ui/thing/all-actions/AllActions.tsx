@@ -26,7 +26,8 @@ export default function AllActions({
   endPeriod = null,
 }: AllActionsComponent) {
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const itemsPerOnePage = 10;
 
   const actionsByPeriod =
     startPeriod === null || endPeriod === null
@@ -112,6 +113,11 @@ export default function AllActions({
           pageActive={page}
           pages={Math.ceil(filtredActions.length / itemsPerPage)}
           setPageActive={setPage}
+          addItemsPerPage={() =>
+            setItemsPerPage((state) =>
+              state < filtredActions.length ? state + itemsPerOnePage : state
+            )
+          }
         />
       </Collapse>
     </Contents>
