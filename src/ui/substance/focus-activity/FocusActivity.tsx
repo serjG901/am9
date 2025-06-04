@@ -52,9 +52,8 @@ export default function FocusActivity({
                   <FlexColumnCenter>
                     <FlexWrap>
                       {activitiesInAction.map(({ activity, startTime }) => (
-                        <Blinker>
+                        <Blinker key={activity.name + activity.color}>
                           <ActionButton
-                            key={activity.name + activity.color}
                             actionWithPayload={hoistActivity}
                             payload={{
                               name: activity.name,
