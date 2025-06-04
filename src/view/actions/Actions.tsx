@@ -107,8 +107,8 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
       if (result === "granted") {
         const activitiesInAction = getActivitiesInAction(actions);
         if (activitiesInAction.length) {
-          activitiesInAction.forEach((action) => {
-            navigator.serviceWorker.ready.then((registration) => {
+          navigator.serviceWorker.ready.then((registration) => {
+            activitiesInAction.forEach((action) => {
               registration.showNotification("AM9", {
                 badge: "./images/android/android-launchericon-96-96.png",
                 body: `in action - ${action.activity.name}`,
@@ -134,6 +134,19 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                       if (clients.openWindow) return clients.openWindow("/");
                     })
                 );
+              });
+            });
+          });
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.getNotifications().then((notifications) => {
+              notifications.forEach((notification) => {
+                if (
+                  !activitiesInAction.find(
+                    (a) => a.activity.name === notification.tag
+                  )
+                ) {
+                  notification.close();
+                }
               });
             });
           });
