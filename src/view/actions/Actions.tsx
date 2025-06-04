@@ -103,22 +103,30 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
   }, [actions]);
 
   useEffect(() => {
-    const activitiesInAction = getActivitiesInAction(actions);
-    if (activitiesInAction.length) {
-      Notification.requestPermission().then((result) => {
-        if (result === "granted") {
+    Notification.requestPermission().then((result) => {
+      if (result === "granted") {
+        const activitiesInAction = getActivitiesInAction(actions);
+        if (activitiesInAction.length) {
           navigator.serviceWorker.ready.then((registration) => {
-            registration.showNotification("Vibration Sample", {
+            registration.showNotification("AM9", {
               body: `in action - ${activitiesInAction
                 .map((a) => a.activity.name)
                 .join(", ")}`,
-              icon: "../images/android/android-launchericon-192-192.png",
+              icon: "./images/android/android-launchericon-192-192.png",
               tag: "action",
             });
           });
+        } else {
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.getNotifications().then((notifications) => {
+              notifications.forEach((notification) => {
+                notification.close();
+              });
+            });
+          });
         }
-      });
-    }
+      }
+    });
   }, [actions]);
 
   return (
