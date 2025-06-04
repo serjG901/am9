@@ -125,7 +125,10 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                     }) //@ts-expect-error notif
                     .then((clientList) => {
                       for (const client of clientList) {
-                        if (client.url === "/" && "focus" in client)
+                        if (
+                          client.url === "https://serjg901.github.io/am9" &&
+                          "focus" in client
+                        )
                           return client.focus();
                       } //@ts-expect-error notif
                       if (clients.openWindow)

@@ -1,6 +1,38 @@
 {
   "short_name": "AM9",
   "name": "AM9: intuitive app for self manage your activity",
+  "start_url": "/am9/",
+  "background_color": "#242424",
+  "display": "standalone",
+  "scope": "/am9/",
+  "description": "Intuitive app for self manage your activity",
+  "screenshots": [
+    {
+      "src": "/am9/images/screenshot1.png",
+      "type": "image/png",
+      "sizes": "540x720",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/am9/images/screenshot2.png",
+      "type": "image/png",
+      "sizes": "540x720",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/am9/images/screenshot3.png",
+      "type": "image/png",
+      "sizes": "720x540",
+      "form_factor": "wide"
+    }
+  ],
+  "theme_color": "#242424",
+  "id": "11",
+  "lang": "en",
+  "orientation": "any",
+  "display_override": ["standalone", "window-controls-overlay"],
+  "categories": ["productivity", "lifestyle", "business", "finance"],
+  "capture_links": "existing-client-navigate",
   "icons": [
     {
       "src": "/am9/images/windows11/SmallTile.scale-100.png",
@@ -574,37 +606,5 @@
       "type": "image/png",
       "purpose": "any"
     }
-  ],
-  "start_url": "/am9/",
-  "background_color": "#242424",
-  "display": "standalone",
-  "scope": "/am9/",
-  "description": "Intuitive app for self manage your activity",
-  "screenshots": [
-    {
-      "src": "/am9/images/screenshot1.png",
-      "type": "image/png",
-      "sizes": "540x720",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/am9/images/screenshot2.png",
-      "type": "image/png",
-      "sizes": "540x720",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/am9/images/screenshot3.png",
-      "type": "image/png",
-      "sizes": "720x540",
-      "form_factor": "wide"
-    }
-  ],
-  "theme_color": "#242424",
-  "id": "11",
-  "lang": "en",
-  "orientation": "any",
-  "display_override": ["standalone", "window-controls-overlay"],
-  "categories": ["productivity", "lifestyle", "business", "finance"],
-  "capture_links": "existing-client-navigate"
+  ]
 }
