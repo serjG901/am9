@@ -107,8 +107,8 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
       if (result === "granted") {
         const activitiesInAction = getActivitiesInAction(actions);
         if (activitiesInAction.length) {
-          navigator.serviceWorker.ready.then((registration) => {
-            activitiesInAction.forEach((action) => {
+          activitiesInAction.forEach((action) => {
+            navigator.serviceWorker.ready.then((registration) => {
               registration.showNotification("AM9", {
                 body: `in action - ${action.activity.name}`,
                 icon: "./images/android/android-launchericon-192-192.png",
