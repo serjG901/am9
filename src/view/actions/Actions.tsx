@@ -119,19 +119,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 //@ts-expect-error notif
                 event.waitUntil(
                   //@ts-expect-error notif
-                  clients
-                    .matchAll({
-                      type: "window",
-                    }) //@ts-expect-error notif
-                    .then((clientList) => {
-                      for (const client of clientList) {
-                        if (client.url === "/am9/" && "focus" in client)
-                          return client.focus();
-                      } //@ts-expect-error notif
-                      if (clients.openWindow)
-                        //@ts-expect-error notif
-                        return clients.openWindow("/am9/");
-                    })
+                  clients.openWindow("https://serjg901.github.io");   
                 );
               });
             });
