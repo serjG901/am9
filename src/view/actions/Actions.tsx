@@ -124,6 +124,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                       type: "window",
                     }) //@ts-expect-error notif
                     .then((clientList) => {
+                      console.dir(clientList);
                       for (const client of clientList) {
                         if (
                           client.url === "https://serjg901.github.io/am9" &&
