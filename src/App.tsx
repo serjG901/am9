@@ -54,6 +54,12 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    Notification.requestPermission().then((result) => {
+      console.log(result);
+    });
+  }, []);
+
   return (
     <div className='app' style={{ "--hue": hue } as React.CSSProperties}>
       <div className='menu'>
