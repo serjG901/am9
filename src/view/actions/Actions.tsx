@@ -113,7 +113,8 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 badge: "./images/android/android-launchericon-96-96.png",
                 body: `in action - ${action.activity.name}`,
                 icon: "./images/android/android-launchericon-192-192.png",
-                tag: `${action.activity.name}`,
+                tag: `${action.activity.name}`, //@ts-expect-error notif
+                renotify: true,
               });
               self.addEventListener("notificationclick", (event) => {
                 //@ts-expect-error notif
