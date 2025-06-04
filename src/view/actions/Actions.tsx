@@ -124,19 +124,13 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                       type: "window",
                     }) //@ts-expect-error notif
                     .then((clientList) => {
-                      console.dir(clientList);
                       for (const client of clientList) {
-                        if (
-                          client.url === "https://serjg901.github.io/am9" &&
-                          "focus" in client
-                        )
+                        if (client.url === "/am9/" && "focus" in client)
                           return client.focus();
                       } //@ts-expect-error notif
                       if (clients.openWindow)
                         //@ts-expect-error notif
-                        return clients.openWindow(
-                          "https://serjg901.github.io/am9"
-                        );
+                        return clients.openWindow("/am9/");
                     })
                 );
               });
