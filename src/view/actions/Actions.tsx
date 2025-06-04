@@ -108,12 +108,31 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
         const activitiesInAction = getActivitiesInAction(actions);
         if (activitiesInAction.length) {
           navigator.serviceWorker.ready.then((registration) => {
-            registration.showNotification("AM9", {
-              body: `in action - ${activitiesInAction
-                .map((a) => a.activity.name)
-                .join(", ")}`,
-              icon: "./images/android/android-launchericon-192-192.png",
-              tag: "action",
+            activitiesInAction.forEach((activities) => {
+              registration.showNotification("AM9", {
+                body: `in action - ${activities}`,
+                icon: "./images/android/android-launchericon-192-192.png",
+                tag: "action",
+              });
+              self.addEventListener("notificationclick", (event) => {
+                //@ts-expect-error notif
+                event.notification.close();
+                //@ts-expect-error notif
+                event.waitUntil(
+                  //@ts-expect-error notif
+                  clients
+                    .matchAll({
+                      type: "window",
+                    }) //@ts-expect-error notif
+                    .then((clientList) => {
+                      for (const client of clientList) {
+                        if (client.url === "/" && "focus" in client)
+                          return client.focus();
+                      } //@ts-expect-error notif
+                      if (clients.openWindow) return clients.openWindow("/");
+                    })
+                );
+              });
             });
           });
         } else {
