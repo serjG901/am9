@@ -104,19 +104,21 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
 
   useEffect(() => {
     const activitiesInAction = getActivitiesInAction(actions);
-    Notification.requestPermission().then((result) => {
-      if (result === "granted") {
-        navigator.serviceWorker.ready.then((registration) => {
-          registration.showNotification("Vibration Sample", {
-            body: `in action - ${activitiesInAction
-              .map((a) => a.activity.name)
-              .join(", ")}`,
-            icon: "../images/android/android-launchericon-192-192.png",
-            tag: "action",
+    if (activitiesInAction.length) {
+      Notification.requestPermission().then((result) => {
+        if (result === "granted") {
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification("Vibration Sample", {
+              body: `in action - ${activitiesInAction
+                .map((a) => a.activity.name)
+                .join(", ")}`,
+              icon: "../images/android/android-launchericon-192-192.png",
+              tag: "action",
+            });
           });
-        });
-      }
-    });
+        }
+      });
+    }
   }, [actions]);
 
   return (
