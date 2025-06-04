@@ -117,8 +117,6 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
               });
               self.addEventListener("notificationclick", (event) => {
                 //@ts-expect-error notif
-                event.notification.close();
-                //@ts-expect-error notif
                 event.waitUntil(
                   //@ts-expect-error notif
                   clients
@@ -130,7 +128,11 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                         if (client.url === "/" && "focus" in client)
                           return client.focus();
                       } //@ts-expect-error notif
-                      if (clients.openWindow) return clients.openWindow("/");
+                      if (clients.openWindow)
+                        //@ts-expect-error notif
+                        return clients.openWindow(
+                          "https://serjg901.github.io/am9"
+                        );
                     })
                 );
               });

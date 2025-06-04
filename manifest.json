@@ -605,5 +605,6 @@
   "lang": "en",
   "orientation": "any",
   "display_override": ["standalone", "window-controls-overlay"],
-  "categories": ["productivity", "lifestyle", "business", "finance"]
+  "categories": ["productivity", "lifestyle", "business", "finance"],
+  "capture_links": "existing-client-navigate"
 }
