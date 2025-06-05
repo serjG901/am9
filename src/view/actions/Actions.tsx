@@ -114,13 +114,27 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 body: `in action - ${action.activity.name}`,
                 icon: "./images/android/android-launchericon-192-192.png",
                 tag: `${action.activity.name}`,
+                data: { url: self.location.origin + "/am9/" },
               });
-              self.addEventListener("notificationclick", (event) => {
+              self.addEventListener("notificationclick", (e) => {
                 //@ts-expect-error notif
-                event.waitUntil(
-                  //@ts-expect-error notif
-                  clients.openWindow("https://serjg901.github.io");   
-                );
+              e.waitUntil(//@ts-expect-error notif
+    clients.matchAll({ type: "window" }).then((clientsArr) => {
+      // Если вкладка, соответствующая целевому URL-адресу, уже существует, сфокусируйтесь на ней;
+     //@ts-expect-error notif
+      const hadWindowToFocus = clientsArr.some((windowClient) =>
+       //@ts-expect-error notif
+        windowClient.url === e.notification.data.url//@ts-expect-error notif
+          ? (windowClient.focus(), true)
+          : false,
+      );
+      // В противном случае откройте новую вкладку для соответствующего URL-адреса и сфокусируйте её.
+      if (!hadWindowToFocus)//@ts-expect-error notif
+        clients//@ts-expect-error notif
+          .openWindow(e.notification.data.url)//@ts-expect-error notif
+          .then((windowClient) => (windowClient ? windowClient.focus() : null));
+    }),
+  );
               });
             });
           });
