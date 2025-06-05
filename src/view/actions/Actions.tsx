@@ -124,7 +124,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
      //@ts-expect-error notif
       const hadWindowToFocus = clientsArr.some((windowClient) =>
        //@ts-expect-error notif
-        windowClient.url === e.notification.data.url//@ts-expect-error notif
+        windowClient.url === e.notification.data.url
           ? (windowClient.focus(), true)
           : false,
       );
