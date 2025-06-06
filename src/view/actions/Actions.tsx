@@ -129,6 +129,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 actions: [{
                   action: `stop${action.activity.name+action.activity.color}`,
                   title: `stop ${action.activity.name}`,
+                  icon: generateSVGUrl(action.activity.color, action.activity.name[0]),
                 }],
               });
               self.addEventListener("notificationclick", (e) => {//@ts-expect-error notif
