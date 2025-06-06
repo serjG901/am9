@@ -121,7 +121,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
               registration.showNotification("AM9", {
                 badge: "./images/notif-icon.png",
                 body: `in action - ${action.activity.name}`,
-                icon: generateSVGUrl(action.activity.color);,
+                icon: generateSVGUrl(action.activity.color),
                 tag: `${action.activity.name}`,
                 data: { url: self.location.origin },//@ts-expect-error notif
                 timestamp: action.startTime,
