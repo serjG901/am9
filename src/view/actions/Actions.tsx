@@ -30,9 +30,10 @@ interface ActionsComponent {
   >;
 }
 
-function generateSVGUrl(colorHex: string) {
+function generateSVGUrl(colorHex: string, text: string) {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">
         <circle cx="48" cy="48" r="48" fill="${colorHex}" />
+        <text x="50%" y="50%" font-size="16" text-anchor="middle" dominant-baseline="middle" fill="black">${text}</text>
     </svg>`;
     
     const blob = new Blob([svg], { type: 'image/svg+xml' });
@@ -121,7 +122,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
               registration.showNotification(action.activity.name, {
                 badge: "./images/notif-icon.png",
                 body: `in action`,
-                icon: generateSVGUrl(action.activity.color),
+                icon: generateSVGUrl(action.activity.color, action.activity.name[0]),
                 tag: `${action.activity.name}`,
                 data: { url: self.location.origin },//@ts-expect-error notif
                 timestamp: action.startTime,
