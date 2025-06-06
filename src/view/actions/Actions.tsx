@@ -112,9 +112,10 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
               registration.showNotification("AM9", {
                 badge: "./images/android/android-launchericon-96-96.png",
                 body: `in action - ${action.activity.name}`,
-                icon: "./images/android/android-launchericon-192-192.png",
+                icon: "./images/apple-touch-icon.png",
                 tag: `${action.activity.name}`,
                 data: { url: self.location.origin + "/am9/" },
+                timestamp: action.startTime,
               });
               self.addEventListener("notificationclick", (e) => {
                 //@ts-expect-error notif
