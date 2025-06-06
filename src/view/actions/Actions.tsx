@@ -127,13 +127,13 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 data: { url: self.location.origin },//@ts-expect-error notif
                 timestamp: action.startTime,
                 actions: [{
-                  name: `stop${action.activity.name+action.activity.color}`,
+                  action: `stop${action.activity.name+action.activity.color}`,
                   title: `stop ${action.activity.name}`,
                   icon: generateSVGUrl(action.activity.color, action.activity.name[0]),
                 }],
               });
               self.addEventListener("notificationclick", (e) => {//@ts-expect-error notif
-                if (e.name === `stop${action.activity.name+action.activity.color}`) {
+                if (e.action === `stop${action.activity.name+action.activity.color}`) {
                 stopAction(action.activity);
                 }
                 //@ts-expect-error notif
