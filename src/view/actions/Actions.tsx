@@ -118,9 +118,9 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
         if (activitiesInAction.length) {
           navigator.serviceWorker.ready.then((registration) => {
             activitiesInAction.forEach((action) => {
-              registration.showNotification("AM9", {
+              registration.showNotification(action.activity.name, {
                 badge: "./images/notif-icon.png",
-                body: `in action - ${action.activity.name}`,
+                body: `in action`,
                 icon: generateSVGUrl(action.activity.color),
                 tag: `${action.activity.name}`,
                 data: { url: self.location.origin },//@ts-expect-error notif
