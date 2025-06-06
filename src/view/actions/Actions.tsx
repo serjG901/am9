@@ -126,6 +126,10 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 tag: `${action.activity.name}`,
                 data: { url: self.location.origin },//@ts-expect-error notif
                 timestamp: action.startTime,
+                actions: [{
+                  action: `stop${action.activity.name}`,
+                  title: `stop ${action.activity.name}`,
+                }],
               });
               self.addEventListener("notificationclick", (e) => {
                 //@ts-expect-error notif
