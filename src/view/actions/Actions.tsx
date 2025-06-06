@@ -30,6 +30,15 @@ interface ActionsComponent {
   >;
 }
 
+function generateSVGUrl(colorHex) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">
+        <circle cx="48" cy="48" r="48" fill="${colorHex}" />
+    </svg>`;
+    
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    return URL.createObjectURL(blob);
+}
+
 export default function Actions({ useActionsStore }: ActionsComponent) {
   const [
     actions,
@@ -112,7 +121,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
               registration.showNotification("AM9", {
                 badge: "./images/notif-icon.png",
                 body: `in action - ${action.activity.name}`,
-                icon: "./images/apple-touch-icon.png",
+                icon: generateSVGUrl(action.activity.color);,
                 tag: `${action.activity.name}`,
                 data: { url: self.location.origin },//@ts-expect-error notif
                 timestamp: action.startTime,
