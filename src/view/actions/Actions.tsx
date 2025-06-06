@@ -110,9 +110,9 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
           navigator.serviceWorker.ready.then((registration) => {
             activitiesInAction.forEach((action) => {
               registration.showNotification("AM9", {
-                badge: "./images/android/android-launchericon-96-96.png",
+                badge: "./images/notif-icon.png",
                 body: `in action - ${action.activity.name}`,
-                icon: "./images/notif-icon.png",
+                icon: "./images/apple-touch-icon.png",
                 tag: `${action.activity.name}`,
                 data: { url: self.location.origin },//@ts-expect-error notif
                 timestamp: action.startTime,
