@@ -131,7 +131,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                   title: `stop ${action.activity.name}`,
                 }],
               });
-              self.addEventListener("notificationclick", (e) => {
+              self.addEventListener("notificationclick", (e) => {//@ts-expect-error notif
                 if (e.action === `stop${action.activity.name+action.activity.color}`) {
                 stopAction(action.activity);
                 }
