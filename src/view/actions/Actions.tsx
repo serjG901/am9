@@ -33,7 +33,7 @@ interface ActionsComponent {
 function generateSVGUrl(colorHex: string, text: string) {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">
         <circle cx="48" cy="48" r="48" fill="${colorHex}" />
-        <text x="50%" y="50%" font-size="64" font-family="Outfit, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" fill="black">${text}</text>
+        <text x="50%" y="50%" font-size="64" font-weight="bold" font-family="Outfit, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" fill="black">${text}</text>
     </svg>`;
     
     const blob = new Blob([svg], { type: 'image/svg+xml' });
