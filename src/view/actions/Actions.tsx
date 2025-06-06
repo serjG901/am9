@@ -123,15 +123,18 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 badge: "./images/notif-icon.png",
                 body: `in action`,
                 icon: generateSVGUrl(action.activity.color, action.activity.name[0]),
-                tag: `${action.activity.name}`,
+                tag: `${action.activity.name+action.activity.color}`,
                 data: { url: self.location.origin },//@ts-expect-error notif
                 timestamp: action.startTime,
                 actions: [{
-                  action: `stop${action.activity.name}`,
+                  action: `stop${action.activity.name+action.activity.color}`,
                   title: `stop ${action.activity.name}`,
                 }],
               });
               self.addEventListener("notificationclick", (e) => {
+                if (e.action === `stop${action.activity.name+action.activity.color}`) {
+                stopAction(action.activity);
+                }
                 //@ts-expect-error notif
               e.waitUntil(//@ts-expect-error notif
     clients.matchAll({ type: "window" }).then((clientsArr) => {
