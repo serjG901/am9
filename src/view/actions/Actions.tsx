@@ -114,7 +114,7 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
                 body: `in action - ${action.activity.name}`,
                 icon: "./images/apple-touch-icon.png",
                 tag: `${action.activity.name}`,
-                data: { url: self.location.origin + "/am9/" },
+                data: { url: self.location.origin + "/am9/" },//@ts-expect-error notif
                 timestamp: action.startTime,
               });
               self.addEventListener("notificationclick", (e) => {
