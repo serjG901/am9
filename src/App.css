@@ -88,6 +88,19 @@ input:focus-visible {
   outline: 1px solid var(--color-border-action-element-accent);
 }
 
+.ntf-circle {
+fill: var(--self-bg);
+}
+
+.ntf-text {
+fill: color(
+    from var(--self-bg) srgb
+      calc(1 - round(calc(r + calc(g * 1.6) + calc(b * 0.4)) / 3, 1))
+      calc(1 - round(calc(r + calc(g * 1.6) + calc(b * 0.4)) / 3, 1))
+      calc(1 - round(calc(r + calc(g * 1.6) + calc(b * 0.4)) / 3, 1))
+  );
+}
+
 .menu {
   width: 100%;
   display: flex;
