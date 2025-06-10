@@ -29,7 +29,8 @@ export default function setNotifications(
                 },
               ],
             });
-            self.addEventListener("notificationclick", (e) => {
+            self.addEventListener("notificationclick", (e) => {//@ts-expect-error notif
+              console.log("Clicked action:", e.action);
               if (
                 //@ts-expect-error notif
                 e.action ===
