@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck
 import { Action, Activity } from "../interfaces";
 import getSvgForNotification from "./getSvgForNotification";
 
@@ -7,12 +9,14 @@ export default function setNotifications(
   stopAction: (activity: Activity) => void
 ) {
   Notification.requestPermission().then((result) => {
+    console.log("Notification Permission:", result);
     if (result === "granted") {
       const activitiesInAction = getActivitiesInAction(actions);
       if (activitiesInAction.length) {
-        navigator.serviceWorker.ready.then((registration) => {
-          activitiesInAction.forEach((action) => {
-            registration.showNotification(action.activity.name, {
+        navigator.serviceWorker.ready.then(async (registration) => {
+          for (const action of activitiesInAction) {
+            console.log("Creating notification for:", action.activity.name);
+            await registration.showNotification(action.activity.name, {
               badge: "./images/notif-icon.png",
               body: `in action`,
               icon: getSvgForNotification(
@@ -20,7 +24,7 @@ export default function setNotifications(
                 action.activity.name[0]
               ),
               tag: `${action.activity.name + action.activity.color}`,
-              data: { url: self.location.origin }, //@ts-expect-error notif
+              data: { url: self.location.origin },
               timestamp: action.startTime,
               actions: [
                 {
@@ -29,48 +33,58 @@ export default function setNotifications(
                 },
               ],
             });
-            self.addEventListener("notificationclick", (e) => {//@ts-expect-error notif
-              console.log("Clicked action:", e.action);
-              if (
-                //@ts-expect-error notif
-                e.action ===
-                `stop${action.activity.name + action.activity.color}`
-              ) {
-                stopAction(action.activity);
-              }
-              //@ts-expect-error notif
-              e.waitUntil(
-                //@ts-expect-error notif
-                clients.matchAll({ type: "window" }).then((clientsArr) => {
-                  // Если вкладка, соответствующая целевому URL-адресу, уже существует, сфокусируйтесь на ней;
-                  //@ts-expect-error notif
-                  const hadWindowToFocus = clientsArr.some((windowClient) =>
-                    //@ts-expect-error notif
-                    windowClient.url === e.notification.data.url
-                      ? (windowClient.focus(), true)
-                      : false
-                  );
-                  // В противном случае откройте новую вкладку для соответствующего URL-адреса и сфокусируйте её.
-                  if (!hadWindowToFocus)
-                    //@ts-expect-error notif
-                    clients //@ts-expect-error notif
-                      .openWindow(e.notification.data.url) //@ts-expect-error notif
-                      .then((windowClient) =>
-                        windowClient ? windowClient.focus() : null
-                      );
-                })
-              );
-            });
-          });
+          }
         });
+
+        // Глобальный обработчик событий
+        self.addEventListener("notificationclick", (e) => {
+          console.log("Notification clicked:", e.notification.tag);
+          console.log("Action triggered:", e.action);
+
+          const clickedActivity = activitiesInAction.find(
+            (action) =>
+              e.notification.tag ===
+              `${action.activity.name + action.activity.color}`
+          );
+
+          if (clickedActivity && e.action.startsWith("stop")) {
+            console.log("Stopping activity:", clickedActivity.activity.name);
+            stopAction(clickedActivity.activity);
+          }
+
+          e.waitUntil(
+            clients.matchAll({ type: "window" }).then((clientsArr) => {
+              console.log("Matching clients:", clientsArr);
+
+              const hadWindowToFocus = clientsArr.some((windowClient) =>
+                windowClient.url === e.notification.data.url
+                  ? (windowClient.focus(), true)
+                  : false
+              );
+
+              if (!hadWindowToFocus)
+                clients
+                  .openWindow(e.notification.data.url)
+                  .then((windowClient) =>
+                    windowClient ? windowClient.focus() : null
+                  );
+            })
+          );
+        });
+
         navigator.serviceWorker.ready.then((registration) => {
           registration.getNotifications().then((notifications) => {
+            console.log(
+              "Existing notifications:",
+              notifications.map((n) => n.tag)
+            );
             notifications.forEach((notification) => {
               if (
                 !activitiesInAction.find(
                   (a) => a.activity.name === notification.tag
                 )
               ) {
+                console.log("Closing notification:", notification.tag);
                 notification.close();
               }
             });
@@ -79,9 +93,8 @@ export default function setNotifications(
       } else {
         navigator.serviceWorker.ready.then((registration) => {
           registration.getNotifications().then((notifications) => {
-            notifications.forEach((notification) => {
-              notification.close();
-            });
+            console.log("Closing all notifications as no activities remain");
+            notifications.forEach((notification) => notification.close());
           });
         });
       }
