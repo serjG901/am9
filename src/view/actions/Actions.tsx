@@ -30,14 +30,29 @@ interface ActionsComponent {
   >;
 }
 
+function getContrastColor(hex: string): string {
+  // Преобразование HEX в RGB
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+
+  // Вычисление яркости по коэффициентам из твоего CSS
+  const brightness = (r + g * 1.6 + b * 0.4) / 3;
+
+  // Определение контрастного цвета
+  return brightness > 128 ? "#000000" : "#FFFFFF";
+}
+
 function generateSVGUrl(colorHex: string, text: string) {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" style="--self-bg: ${colorHex}" width="96" height="96">
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" style="--self-bg: ${colorHex}" width="96" height="96">
         <circle class="ntf-circle" cx="48" cy="48" r="48" fill="${colorHex}"/>
-        <text class="ntf-text" x="50%" y="50%" font-size="64" font-weight="bold" font-family="Outfit, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" fill="black">${text}</text>
+        <text class="ntf-text" x="50%" y="50%" font-size="64" font-weight="bold" font-family="Outfit, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" fill="${getContrastColor(
+          colorHex
+        )}">${text}</text>
     </svg>`;
-    
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    return URL.createObjectURL(blob);
+
+  const blob = new Blob([svg], { type: "image/svg+xml" });
+  return URL.createObjectURL(blob);
 }
 
 export default function Actions({ useActionsStore }: ActionsComponent) {
@@ -122,38 +137,56 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
               registration.showNotification(action.activity.name, {
                 badge: "./images/notif-icon.png",
                 body: `in action`,
-                icon: generateSVGUrl(action.activity.color, action.activity.name[0]),
-                tag: `${action.activity.name+action.activity.color}`,
-                data: { url: self.location.origin },//@ts-expect-error notif
+                icon: generateSVGUrl(
+                  action.activity.color,
+                  action.activity.name[0]
+                ),
+                tag: `${action.activity.name + action.activity.color}`,
+                data: { url: self.location.origin }, //@ts-expect-error notif
                 timestamp: action.startTime,
-                actions: [{
-                  action: `stop${action.activity.name+action.activity.color}`,
-                  title: `stop ${action.activity.name}`,
-                  icon: generateSVGUrl(action.activity.color, action.activity.name[0]),
-                }],
+                actions: [
+                  {
+                    action: `stop${
+                      action.activity.name + action.activity.color
+                    }`,
+                    title: `stop ${action.activity.name}`,
+                    icon: generateSVGUrl(
+                      action.activity.color,
+                      action.activity.name[0]
+                    ),
+                  },
+                ],
               });
-              self.addEventListener("notificationclick", (e) => {//@ts-expect-error notif
-                if (e.action === `stop${action.activity.name+action.activity.color}`) {
-                stopAction(action.activity);
+              self.addEventListener("notificationclick", (e) => {
+                if (
+                  //@ts-expect-error notif
+                  e.action ===
+                  `stop${action.activity.name + action.activity.color}`
+                ) {
+                  stopAction(action.activity);
                 }
                 //@ts-expect-error notif
-              e.waitUntil(//@ts-expect-error notif
-    clients.matchAll({ type: "window" }).then((clientsArr) => {
-      // Если вкладка, соответствующая целевому URL-адресу, уже существует, сфокусируйтесь на ней;
-     //@ts-expect-error notif
-      const hadWindowToFocus = clientsArr.some((windowClient) =>
-       //@ts-expect-error notif
-        windowClient.url === e.notification.data.url
-          ? (windowClient.focus(), true)
-          : false,
-      );
-      // В противном случае откройте новую вкладку для соответствующего URL-адреса и сфокусируйте её.
-      if (!hadWindowToFocus)//@ts-expect-error notif
-        clients//@ts-expect-error notif
-          .openWindow(e.notification.data.url)//@ts-expect-error notif
-          .then((windowClient) => (windowClient ? windowClient.focus() : null));
-    }),
-  );
+                e.waitUntil(
+                  //@ts-expect-error notif
+                  clients.matchAll({ type: "window" }).then((clientsArr) => {
+                    // Если вкладка, соответствующая целевому URL-адресу, уже существует, сфокусируйтесь на ней;
+                    //@ts-expect-error notif
+                    const hadWindowToFocus = clientsArr.some((windowClient) =>
+                      //@ts-expect-error notif
+                      windowClient.url === e.notification.data.url
+                        ? (windowClient.focus(), true)
+                        : false
+                    );
+                    // В противном случае откройте новую вкладку для соответствующего URL-адреса и сфокусируйте её.
+                    if (!hadWindowToFocus)
+                      //@ts-expect-error notif
+                      clients //@ts-expect-error notif
+                        .openWindow(e.notification.data.url) //@ts-expect-error notif
+                        .then((windowClient) =>
+                          windowClient ? windowClient.focus() : null
+                        );
+                  })
+                );
               });
             });
           });
