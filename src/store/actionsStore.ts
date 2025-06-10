@@ -25,9 +25,9 @@ const useActionsStore = create<ActionsStore>()(
       getActivitiesInAction: (actions: Action[]) =>
         actions.filter((action) => !action.endTime),
 
-      focusActivity: { name: "", color: "" },
+      focusActivity: { name: "", color: "#000000" },
       setFocusActivity: (activity: Activity) => {
-        set({ focusActivity: activity || { name: "", color: "" } });
+        set({ focusActivity: activity || { name: "", color: "#000000" } });
         if ("vibrate" in navigator) {
           navigator.vibrate([200]);
         }
