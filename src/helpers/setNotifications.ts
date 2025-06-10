@@ -8,6 +8,9 @@ export default function setNotifications(
   getActivitiesInAction: (actions: Action[]) => Action[],
   stopAction: (activity: Activity) => void
 ) {
+  // eslint-disable-next-line prefer-const
+  let notificationsCreated = new Set<string>(); // Хранит уже созданные уведомления
+
   Notification.requestPermission().then((result) => {
     console.log("Notification Permission:", result);
     if (result === "granted") {
@@ -15,6 +18,17 @@ export default function setNotifications(
       if (activitiesInAction.length) {
         navigator.serviceWorker.ready.then(async (registration) => {
           for (const action of activitiesInAction) {
+            const notificationTag = `${
+              action.activity.name + action.activity.color
+            }`;
+
+            if (notificationsCreated.has(notificationTag)) {
+              console.log(
+                `Skipping duplicate notification: ${notificationTag}`
+              );
+              continue; // Пропускаем создание дубликатов
+            }
+
             console.log("Creating notification for:", action.activity.name);
             await registration.showNotification(action.activity.name, {
               badge: "./images/notif-icon.png",
@@ -23,20 +37,22 @@ export default function setNotifications(
                 action.activity.color,
                 action.activity.name[0]
               ),
-              tag: `${action.activity.name + action.activity.color}`,
+              tag: notificationTag,
               data: { url: self.location.origin },
               timestamp: action.startTime,
               actions: [
                 {
-                  action: `stop${action.activity.name + action.activity.color}`,
+                  action: `stop${notificationTag}`,
                   title: `stop ${action.activity.name}`,
                 },
               ],
             });
+
+            notificationsCreated.add(notificationTag);
           }
         });
 
-        // Глобальный обработчик событий
+        // Глобальный обработчик событий для кликов по уведомлениям
         self.addEventListener("notificationclick", (e) => {
           console.log("Notification clicked:", e.notification.tag);
           console.log("Action triggered:", e.action);
@@ -50,6 +66,7 @@ export default function setNotifications(
           if (clickedActivity && e.action.startsWith("stop")) {
             console.log("Stopping activity:", clickedActivity.activity.name);
             stopAction(clickedActivity.activity);
+            notificationsCreated.delete(e.notification.tag); // Удаляем из списка активных уведомлений
           }
 
           e.waitUntil(
@@ -72,6 +89,7 @@ export default function setNotifications(
           );
         });
 
+        // Очистка устаревших уведомлений
         navigator.serviceWorker.ready.then((registration) => {
           registration.getNotifications().then((notifications) => {
             console.log(
@@ -86,15 +104,19 @@ export default function setNotifications(
               ) {
                 console.log("Closing notification:", notification.tag);
                 notification.close();
+                notificationsCreated.delete(notification.tag);
               }
             });
           });
         });
       } else {
+        console.log("No active activities, clearing all notifications.");
         navigator.serviceWorker.ready.then((registration) => {
           registration.getNotifications().then((notifications) => {
-            console.log("Closing all notifications as no activities remain");
-            notifications.forEach((notification) => notification.close());
+            notifications.forEach((notification) => {
+              notification.close();
+              notificationsCreated.delete(notification.tag);
+            });
           });
         });
       }
