@@ -23,36 +23,13 @@ import { useEffect } from "react";
 import AllActions from "../../ui/thing/all-actions/AllActions";
 import Contents from "../../ui/atom/contents/Contents";
 import ActionsByPeriod from "../../ui/thing/actions-by-period/ActionsByPeriod";
+import setBadges from "../../helpers/setBadges";
+import setNotifications from "../../helpers/setNotifications";
 
 interface ActionsComponent {
   useActionsStore: UseBoundStore<
     Write<StoreApi<ActionsStore>, StorePersist<ActionsStore, ActionsStore>>
   >;
-}
-
-function getContrastColor(hex: string): string {
-  // Преобразование HEX в RGB
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-
-  // Вычисление яркости по коэффициентам из твоего CSS
-  const brightness = (r + g * 1.6 + b * 0.4) / 3;
-
-  // Определение контрастного цвета
-  return brightness > 128 ? "#000000" : "#FFFFFF";
-}
-
-function generateSVGUrl(colorHex: string, text: string) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" style="--self-bg: ${colorHex}" width="96" height="96">
-        <circle class="ntf-circle" cx="48" cy="48" r="48" fill="${colorHex}"/>
-        <text class="ntf-text" x="50%" y="50%" font-size="64" font-weight="bold" font-family="Outfit, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" fill="${getContrastColor(
-          colorHex
-        )}">${text}</text>
-    </svg>`;
-
-  const blob = new Blob([svg], { type: "image/svg+xml" });
-  return URL.createObjectURL(blob);
 }
 
 export default function Actions({ useActionsStore }: ActionsComponent) {
@@ -111,109 +88,11 @@ export default function Actions({ useActionsStore }: ActionsComponent) {
   }, []);
 
   useEffect(() => {
-    if (navigator.setAppBadge) {
-      const actionsCount = actions.filter((a) => !a.endTime).length;
-      if (actionsCount) {
-        navigator
-          .setAppBadge(actions.filter((a) => !a.endTime).length)
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        navigator.clearAppBadge().catch((error) => {
-          console.log(error);
-        });
-      }
-    }
+    setBadges(actions);
   }, [actions]);
 
   useEffect(() => {
-    Notification.requestPermission().then((result) => {
-      if (result === "granted") {
-        const activitiesInAction = getActivitiesInAction(actions);
-        if (activitiesInAction.length) {
-          navigator.serviceWorker.ready.then((registration) => {
-            activitiesInAction.forEach((action) => {
-              registration.showNotification(action.activity.name, {
-                badge: "./images/notif-icon.png",
-                body: `in action`,
-                icon: generateSVGUrl(
-                  action.activity.color,
-                  action.activity.name[0]
-                ),
-                tag: `${action.activity.name + action.activity.color}`,
-                data: { url: self.location.origin }, //@ts-expect-error notif
-                timestamp: action.startTime,
-                actions: [
-                  {
-                    action: `stop${
-                      action.activity.name + action.activity.color
-                    }`,
-                    title: `stop ${action.activity.name}`,
-                    icon: generateSVGUrl(
-                      action.activity.color,
-                      action.activity.name[0]
-                    ),
-                  },
-                ],
-              });
-              self.addEventListener("notificationclick", (e) => {
-                if (
-                  //@ts-expect-error notif
-                  e.action ===
-                  `stop${action.activity.name + action.activity.color}`
-                ) {
-                  stopAction(action.activity);
-                }
-                //@ts-expect-error notif
-                e.waitUntil(
-                  //@ts-expect-error notif
-                  clients.matchAll({ type: "window" }).then((clientsArr) => {
-                    // Если вкладка, соответствующая целевому URL-адресу, уже существует, сфокусируйтесь на ней;
-                    //@ts-expect-error notif
-                    const hadWindowToFocus = clientsArr.some((windowClient) =>
-                      //@ts-expect-error notif
-                      windowClient.url === e.notification.data.url
-                        ? (windowClient.focus(), true)
-                        : false
-                    );
-                    // В противном случае откройте новую вкладку для соответствующего URL-адреса и сфокусируйте её.
-                    if (!hadWindowToFocus)
-                      //@ts-expect-error notif
-                      clients //@ts-expect-error notif
-                        .openWindow(e.notification.data.url) //@ts-expect-error notif
-                        .then((windowClient) =>
-                          windowClient ? windowClient.focus() : null
-                        );
-                  })
-                );
-              });
-            });
-          });
-          navigator.serviceWorker.ready.then((registration) => {
-            registration.getNotifications().then((notifications) => {
-              notifications.forEach((notification) => {
-                if (
-                  !activitiesInAction.find(
-                    (a) => a.activity.name === notification.tag
-                  )
-                ) {
-                  notification.close();
-                }
-              });
-            });
-          });
-        } else {
-          navigator.serviceWorker.ready.then((registration) => {
-            registration.getNotifications().then((notifications) => {
-              notifications.forEach((notification) => {
-                notification.close();
-              });
-            });
-          });
-        }
-      }
-    });
+    setNotifications(actions, getActivitiesInAction, stopAction);
   }, [actions]);
 
   return (
