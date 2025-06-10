@@ -24,11 +24,12 @@ export default function getSvgForNotification(colorHex: string, text: string) {
         <text 
             class="ntf-text" 
             x="50%" 
-            y="55%" 
+            y="50%" 
             font-size="64" 
             font-weight="bold" 
             font-family="Outfit, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif" 
             text-anchor="middle" 
+            alignment-baseline="middle"
             dominant-baseline="middle" 
             fill="${getContrastColor(colorHex)}"
         >
