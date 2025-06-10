@@ -21,7 +21,7 @@ interface FocusActivityComponent {
 export default function FocusActivity({
   timestamp = Date.now(),
   activitiesInAction = [],
-  focusActivity = { name: "", color: "" },
+  focusActivity = { name: "", color: "#000000" },
   maybeActivities = [],
   hoistActivity = () => {},
 }: FocusActivityComponent) {
