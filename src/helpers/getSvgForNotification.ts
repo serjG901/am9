@@ -9,7 +9,7 @@ export function getContrastColor(hex: string): string {
 export default function getSvgForNotification(colorHex: string, text: string) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" style="--self-bg: ${colorHex}" width="96" height="96">
         <circle class="ntf-circle" cx="48" cy="48" r="48" fill="${colorHex}"/>
-        <text class="ntf-text" x="50%" y="40%" font-size="64" font-weight="bold" font-family="Outfit, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" fill="${getContrastColor(
+        <text class="ntf-text" x="50%" y="60%" font-size="64" font-weight="bold" font-family="Outfit, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" fill="${getContrastColor(
           colorHex
         )}">${text}</text>
     </svg>`;
