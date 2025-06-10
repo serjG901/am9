@@ -52,41 +52,51 @@ export default function setNotifications(
           }
         });
 
-        // Глобальный обработчик событий для кликов по уведомлениям
+        // Глобальный обработчик событий
         self.addEventListener("notificationclick", (e) => {
           console.log("Notification clicked:", e.notification.tag);
           console.log("Action triggered:", e.action);
 
-          const clickedActivity = activitiesInAction.find(
-            (action) =>
-              e.notification.tag ===
-              `${action.activity.name + action.activity.color}`
-          );
+          const appUrl = "https://serjg901.github.io/am9/";
 
-          if (clickedActivity && e.action.startsWith("stop")) {
-            console.log("Stopping activity:", clickedActivity.activity.name);
-            stopAction(clickedActivity.activity);
-            notificationsCreated.delete(e.notification.tag); // Удаляем из списка активных уведомлений
+          if (!e.action || !e.action.startsWith("stop")) {
+            // Обычное нажатие — просто открываем приложение
+            e.waitUntil(
+              clients.matchAll({ type: "window" }).then((clientsArr) => {
+                console.log("Matching clients:", clientsArr);
+
+                const hadWindowToFocus = clientsArr.some((windowClient) =>
+                  windowClient.url.startsWith(appUrl)
+                    ? (windowClient.focus(), true)
+                    : false
+                );
+
+                if (!hadWindowToFocus) {
+                  console.log("Opening new window:", appUrl);
+                  clients
+                    .openWindow(appUrl)
+                    .then((windowClient) =>
+                      windowClient ? windowClient.focus() : null
+                    );
+                }
+              })
+            );
+          } else {
+            // Нажатие на "стоп" — логируем и вызываем stopAction
+            const clickedActivity = activitiesInAction.find(
+              (action) =>
+                e.notification.tag ===
+                `${action.activity.name + action.activity.color}`
+            );
+
+            if (clickedActivity) {
+              console.log("Stopping activity:", clickedActivity.activity.name);
+              stopAction(clickedActivity.activity);
+              notificationsCreated.delete(e.notification.tag); // Удаляем из списка активных уведомлений
+            } else {
+              console.log("Activity not found for stop:", e.notification.tag);
+            }
           }
-
-          e.waitUntil(
-            clients.matchAll({ type: "window" }).then((clientsArr) => {
-              console.log("Matching clients:", clientsArr);
-
-              const hadWindowToFocus = clientsArr.some((windowClient) =>
-                windowClient.url === e.notification.data.url
-                  ? (windowClient.focus(), true)
-                  : false
-              );
-
-              if (!hadWindowToFocus)
-                clients
-                  .openWindow(e.notification.data.url)
-                  .then((windowClient) =>
-                    windowClient ? windowClient.focus() : null
-                  );
-            })
-          );
         });
 
         // Очистка устаревших уведомлений
