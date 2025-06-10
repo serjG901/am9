@@ -8,124 +8,72 @@ export default function setNotifications(
   getActivitiesInAction: (actions: Action[]) => Action[],
   stopAction: (activity: Activity) => void
 ) {
-  // eslint-disable-next-line prefer-const
-  let notificationsCreated = new Set<string>(); // Хранит уже созданные уведомления
-
   Notification.requestPermission().then((result) => {
-    console.log("Notification Permission:", result);
     if (result === "granted") {
       const activitiesInAction = getActivitiesInAction(actions);
       if (activitiesInAction.length) {
-        navigator.serviceWorker.ready.then(async (registration) => {
-          for (const action of activitiesInAction) {
-            const notificationTag = `${
-              action.activity.name + action.activity.color
-            }`;
-
-            if (notificationsCreated.has(notificationTag)) {
-              console.log(
-                `Skipping duplicate notification: ${notificationTag}`
-              );
-              continue; // Пропускаем создание дубликатов
-            }
-
-            console.log("Creating notification for:", action.activity.name);
-            await registration.showNotification(action.activity.name, {
+        navigator.serviceWorker.ready.then((registration) => {
+          activitiesInAction.forEach((action) => {
+            registration.showNotification(action.activity.name, {
               badge: "./images/notif-icon.png",
               body: `in action`,
               icon: getSvgForNotification(
                 action.activity.color,
                 action.activity.name[0]
               ),
-              tag: notificationTag,
+              tag: `${action.activity.name + action.activity.color}`,
               data: { url: self.location.origin },
               timestamp: action.startTime,
               actions: [
                 {
-                  action: `stop${notificationTag}`,
+                  action: `stop${action.activity.name + action.activity.color}`,
                   title: `stop ${action.activity.name}`,
                 },
               ],
             });
-
-            notificationsCreated.add(notificationTag);
-          }
+            self.addEventListener("notificationclick", (e) => {
+              if (
+                e.action ===
+                `stop${action.activity.name + action.activity.color}`
+              ) {
+                stopAction(action.activity);
+              }
+              e.waitUntil(
+                clients.matchAll({ type: "window" }).then((clientsArr) => {
+                  const hadWindowToFocus = clientsArr.some((windowClient) =>
+                    windowClient.url === e.notification.data.url
+                      ? (windowClient.focus(), true)
+                      : false
+                  );
+                  if (!hadWindowToFocus)
+                    clients
+                      .openWindow(e.notification.data.url)
+                      .then((windowClient) =>
+                        windowClient ? windowClient.focus() : null
+                      );
+                })
+              );
+            });
+          });
         });
-
-        // Глобальный обработчик событий
-        self.addEventListener("notificationclick", (e) => {
-          console.log("Notification clicked:", e.notification.tag);
-          console.log("Action triggered:", e.action);
-
-          const appUrl = "https://serjg901.github.io/am9/";
-
-          if (!e.action || !e.action.startsWith("stop")) {
-            // Обычное нажатие — просто открываем приложение
-            e.waitUntil(
-              clients.matchAll({ type: "window" }).then((clientsArr) => {
-                console.log("Matching clients:", clientsArr);
-
-                const hadWindowToFocus = clientsArr.some((windowClient) =>
-                  windowClient.url.startsWith(appUrl)
-                    ? (windowClient.focus(), true)
-                    : false
-                );
-
-                if (!hadWindowToFocus) {
-                  console.log("Opening new window:", appUrl);
-                  clients
-                    .openWindow(appUrl)
-                    .then((windowClient) =>
-                      windowClient ? windowClient.focus() : null
-                    );
-                }
-              })
-            );
-          } else {
-            // Нажатие на "стоп" — логируем и вызываем stopAction
-            const clickedActivity = activitiesInAction.find(
-              (action) =>
-                e.notification.tag ===
-                `${action.activity.name + action.activity.color}`
-            );
-
-            if (clickedActivity) {
-              console.log("Stopping activity:", clickedActivity.activity.name);
-              stopAction(clickedActivity.activity);
-              notificationsCreated.delete(e.notification.tag); // Удаляем из списка активных уведомлений
-            } else {
-              console.log("Activity not found for stop:", e.notification.tag);
-            }
-          }
-        });
-
-        // Очистка устаревших уведомлений
         navigator.serviceWorker.ready.then((registration) => {
           registration.getNotifications().then((notifications) => {
-            console.log(
-              "Existing notifications:",
-              notifications.map((n) => n.tag)
-            );
             notifications.forEach((notification) => {
               if (
                 !activitiesInAction.find(
                   (a) => a.activity.name === notification.tag
                 )
               ) {
-                console.log("Closing notification:", notification.tag);
                 notification.close();
-                notificationsCreated.delete(notification.tag);
               }
             });
           });
         });
       } else {
-        console.log("No active activities, clearing all notifications.");
         navigator.serviceWorker.ready.then((registration) => {
           registration.getNotifications().then((notifications) => {
             notifications.forEach((notification) => {
               notification.close();
-              notificationsCreated.delete(notification.tag);
             });
           });
         });
