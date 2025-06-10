@@ -48,7 +48,7 @@ const useActionsStore = create<ActionsStore>()(
           focusActivity:
             state.focusActivity.name === activity.name &&
             state.focusActivity.color === activity.color
-              ? { name: "", color: "" }
+              ? { name: "", color: "#000000" }
               : state.focusActivity,
         }));
         if ("vibrate" in navigator) {
@@ -67,7 +67,7 @@ const useActionsStore = create<ActionsStore>()(
           focusActivity:
             state.focusActivity.name === activity.name &&
             state.focusActivity.color === activity.color
-              ? { name: "", color: "" }
+              ? { name: "", color: "#000000" }
               : state.focusActivity,
         }));
         if ("vibrate" in navigator) {
@@ -161,7 +161,7 @@ const useActionsStore = create<ActionsStore>()(
           focusActivity:
             state.focusActivity.name === activityDelete.name &&
             state.focusActivity.color === activityDelete.color
-              ? { name: "", color: "" }
+              ? { name: "", color: "#000000" }
               : state.focusActivity,
         }));
       },
